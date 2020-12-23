@@ -79,6 +79,12 @@ Page({
     ]
   },
 
+  addorder(e) {
+    wx.navigateTo({
+      url: '/pages/addorder/addorder',
+    })
+  },
+
   /**
    * Lifecycle function--Called when page load
    */
