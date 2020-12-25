@@ -38,12 +38,11 @@ Page({
   },
   
   formSubmit(e) {
-    console.log('form发生了submit事件，携带数据为：', e.detail.value)
-    db.collection('inventories').orderBy('_id', 'desc')
+    db.collection('orders').orderBy('_id', 'desc')
     .limit(1)
     .get()
     .then(res => {
-      db.collection("inventories").add(
+      db.collection("orders").add(
             {
               data:{
                 _id: res.data[0]?res.data[0]._id + 1:1,

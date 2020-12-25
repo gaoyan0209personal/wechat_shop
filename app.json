@@ -4,7 +4,8 @@
     "pages/orders/orders",
     "pages/login/login",
     "pages/additem/additem",
-    "pages/addcategory/addcategory"
+    "pages/addcategory/addcategory",
+    "pages/addorder/addorder"
   ],
   "window": {
     "backgroundTextStyle": "light",

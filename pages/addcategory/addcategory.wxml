@@ -1,5 +1,5 @@
 <!--pages/addcategory/addcategory.wxml-->
-<view class="itemcontainer">
+<view class="container">
 	<view class="page-body">
 		<form catchsubmit="formSubmit" catchreset="formReset">
 			<view class="page-section">

@@ -6,26 +6,7 @@ Page({
    * Page initial data
    */
   data: {
-    classType: [{
-        "_id": 1,
-        "name": "全部货物"
-      },
-      {
-        "_id": 2,
-        "name": "手机"
-      },
-      {
-        "_id": 3,
-        "name": "数码"
-      },
-      {
-        "_id": 4,
-        "name": "服装"
-      },
-      {
-        "_id": 5,
-        "name": "电脑"
-      },
+    classType: [
     ],
     productList: [],
     productAll: [{
