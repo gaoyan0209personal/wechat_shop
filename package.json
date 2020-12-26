@@ -3,12 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
-  "dependencies": {
-    "googleapis": "^66.0.0",
-    "vant-weapp": "^0.5.29",
-    "wx-server-sdk": "^2.3.2"
-  },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -21,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/gaoyan0209personal/wechat_shop/issues"
   },
-  "homepage": "https://github.com/gaoyan0209personal/wechat_shop#readme"
+  "homepage": "https://github.com/gaoyan0209personal/wechat_shop#readme",
+  "dependencies": {
+    "@vant/weapp": "^1.6.4"
+  }
 }

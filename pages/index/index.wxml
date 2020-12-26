@@ -19,10 +19,10 @@
 
 </view>
 <view class="bottombuttons">
-	<button class="bottombutton1" type="primary" size="mini" bindtap="addcategory">
+	<van-button type="default" bindtap="addcategory">
 		+加分类
 		<text></text>
-	</button>
+	</van-button>
 	<button class="bottombutton2" type="primary" size="mini" bindtap="additem">
 		+加库存
 		<text></text>
