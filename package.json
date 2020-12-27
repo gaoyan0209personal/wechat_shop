@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/gaoyan0209personal/wechat_shop#readme",
   "dependencies": {
-    "@vant/weapp": "^1.6.4"
+    "@vant/weapp": "^1.6.4",
+    "googleapis": "^66.0.0",
+    "js-base64": "^3.6.0"
   }
 }
