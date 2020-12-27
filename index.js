@@ -3,7 +3,10 @@ const readline = require('readline');
 const {
   google
 } = require('googleapis');
-const {Base64} = require('js-base64');
+const {
+  Base64
+} = require('js-base64');
+const regexpNamePrice = new RegExp(/(?<Name>.+)\s+\$(?<Price>.+)T\s+(?<PTC>\d+)\s+/, 'g');
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
@@ -16,7 +19,7 @@ const TOKEN_PATH = 'token.json';
 fs.readFile('credentials.json', (err, content) => {
   if (err) return console.log('Error loading client secret file:', err);
   // Authorize a client with credentials, then call the Gmail API.
-  authorize(JSON.parse(content), listLabels);
+  authorize(JSON.parse(content), listProducts);
 });
 
 /**
@@ -78,29 +81,29 @@ function getNewToken(oAuth2Client, callback) {
  *
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
-function listLabels(auth) {
+function listProducts(auth, ) {
   const gmail = google.gmail({
     version: 'v1',
     auth
   });
   gmail.users.messages.get({
     userId: 'me',
-    id:'1769f739262ce1b6',
+    id: '1769f739262ce1b6',
   }, (err, res) => {
     if (err) return console.log('The API returned an error: ' + err);
     // const labels = res.data.labels;
-    const me_data = res.data;
-    encodeed_receipt_data = me_data.payload.parts[0].body.data;
-    console.log(encodeed_receipt_data);
-    console.log(Base64.decode(encodeed_receipt_data));
-
-    // if (labels.length) {
-    //   console.log('Labels123123:');
-    //   labels.forEach((label) => {
-    //     console.log(`- ${label.name}`);
-    //   });
-    // } else {
-    //   console.log('No labels found.');
-    // }
+    const encodeed_receipt_data = res.data.payload.parts[0].body.data;
+    const decode_data = Base64.decode(encodeed_receipt_data);
+    // console.log(typeof decode_data);
+    const results = decode_data.matchAll(regexpNamePrice);
+    console.log(results.groups);
+    for (result of results) {
+      const {
+        Name,
+        Price,
+        PTC
+      } = result.groups;
+      console.log(Name, Price, PTC);
+    }
   });
 }
