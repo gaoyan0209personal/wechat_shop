@@ -1,3 +1,5 @@
+// 云函数入口文件
+const cloud = require('wx-server-sdk')
 const fs = require('fs');
 const readline = require('readline');
 const {
@@ -6,6 +8,7 @@ const {
 const {
   Base64
 } = require('js-base64');
+var holder = "";
 const regexpNamePrice = new RegExp(/(?<Name>.+)\s+\$(?<Price>.+)T\s+(?<PTC>\d+)\s+/, 'g');
 
 // If modifying these scopes, delete token.json.
@@ -15,12 +18,22 @@ const SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
 // time.
 const TOKEN_PATH = 'token.json';
 
+cloud.init()
+
+// 云函数入口函数
+exports.main = async (event, context) => {
+  const wxContext = cloud.getWXContext()
+  fs.readFile('credentials.json', (err, content) => {
+    if (err) return console.log('Error loading client secret file:', err);
+    // Authorize a client with credentials, then call the Gmail API.
+    // authorize(JSON.parse(content), listProducts);
+  });
+  return {
+    sum: event.a + event.b
+  }
+}
+
 // Load client secrets from a local file.
-fs.readFile('credentials.json', (err, content) => {
-  if (err) return console.log('Error loading client secret file:', err);
-  // Authorize a client with credentials, then call the Gmail API.
-  authorize(JSON.parse(content), listProducts);
-});
 
 /**
  * Create an OAuth2 client with the given credentials, and then execute the
@@ -81,7 +94,7 @@ function getNewToken(oAuth2Client, callback) {
  *
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
-function listProducts(auth, ) {
+function listProducts(auth) {
   const gmail = google.gmail({
     version: 'v1',
     auth
@@ -103,7 +116,7 @@ function listProducts(auth, ) {
         Price,
         PTC
       } = result.groups;
-      console.log(Name, Price, PTC);
+      holder += (Name + " "+ Price+ " " +PTC);
     }
   });
 }

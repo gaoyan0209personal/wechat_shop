@@ -1,4 +1,5 @@
 const db = wx.cloud.database()
+const app = getApp()
 
 Page({
 
@@ -6,8 +7,7 @@ Page({
    * Page initial data
    */
   data: {
-    classType: [
-    ],
+    classType: [],
     productList: [],
     productAll: [{
         "id": 1,
@@ -60,7 +60,7 @@ Page({
     })
   },
 
-  additem(e){
+  additem(e) {
     wx.navigateTo({
       url: '/pages/additem/additem',
     })
@@ -84,8 +84,47 @@ Page({
   /**
    * Lifecycle function--Called when page load
    */
-  onLoad: function (options) {
-    console.log("onLoad请求成功了", options)
+  onLoad: async function (options) {
+    const oa = options.account
+    console.log("0", oa);
+    var self = this
+    await wx.cloud.callFunction({
+      name: 'account'
+    }).then(({
+      result
+    }) => {
+      let now = result[0]
+      console.log("0", now)
+      if (oa) {
+        now = result.find(v => v.addr = oa)
+      }
+      console.log("0", now)
+      self.setData({
+        account: result,
+        now
+      })
+      app.globalData.account = result
+    })
+    console.log("1", "app.globalData.account", app.globalData.account);
+    console.log("1", "this.data", self.data);
+    //当前账户
+    const account = self.data.now
+    console.log("2", account, typeof account);
+    await wx.cloud.callFunction({
+      name: 'receive',
+      data: {
+        // default
+        num: 3,
+        account
+      }
+    }).then(res => {
+      console.log(res.result);
+      app.globalData.email.push(...res.result)
+      self.setData({
+        mail: res.result
+      })
+    })
+    
   },
 
   /**
@@ -99,21 +138,19 @@ Page({
    * Lifecycle function--Called when page show
    */
   onShow: function () {
-    
+    console.log("index page onshow run successfully ")
     let that = this
-    db.collection("categories").get(
-      {
-        success(res){
-          that.setData({
-            classType:res.data
-          })
+    db.collection("categories").get({
+      success(res) {
+        that.setData({
+          classType: res.data
+        })
       },
-      fail(res){
-        console.log("请求失败",res)
+      fail(res) {
+        console.log("请求失败", res)
       }
-    
-    }
-    )
+
+    })
   },
 
   /**
