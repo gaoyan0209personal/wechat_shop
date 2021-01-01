@@ -1,6 +1,5 @@
 const db = wx.cloud.database()
 const app = getApp()
-const regexpNamePrice = new RegExp(/(?<Name>.+)\s+\$(?<Price>.+)T\s+(?<PTC>\d+)\s+/, 'g');
 
 Page({
 
@@ -102,17 +101,17 @@ Page({
   onShow: function () {
     console.log("index page onshow run successfully ")
     let that = this
-    db.collection("categories").get({
-      success(res) {
-        that.setData({
-          classType: res.data
-        })
-      },
-      fail(res) {
-        console.log("请求失败", res)
-      }
+    // db.collection("categories").get({
+    //   success(res) {
+    //     that.setData({
+    //       classType: res.data
+    //     })
+    //   },
+    //   fail(res) {
+    //     console.log("请求失败", res)
+    //   }
 
-    })
+    // })
   },
 
   /**

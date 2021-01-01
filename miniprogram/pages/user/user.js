@@ -1,5 +1,6 @@
 const db = wx.cloud.database()
 const app = getApp()
+const regexpNamePrice = /(?<Name>.+)\s+\$(?<Price>.+)T\s+(?<UPC>\d+)\s+/gm;
 
 // pages/user/user.js
 Page({
@@ -91,33 +92,81 @@ Page({
           _id: false,
           time_id: true,
         }).limit(1).get().then(res => {
-          console.log(res.data)
-
           var i;
-          if (res.data.length == 0) {
+          if (res.data.length == 0) { // current user latest coach email, if user has.
             for (i = 0; i < this.data.email_len; i++) {
               const saved_email = this.data.received_email.result[i]
-              db.collection('emails').add({
-                data: saved_email,
-              })
+              this.addemail(saved_email)
+              this.addinventory(saved_email)
             }
           } else {
             const latest_date = res.data[0].time_id // latest email date
             for (i = 0; i < this.data.email_len; i++) {
               if (this.data.received_email.result[i].time_id > latest_date) {
                 const saved_email = this.data.received_email.result[i]
-                db.collection('emails').add({
-                  data: saved_email,
-                })
+                this.addemail(saved_email)
+                this.addinventory(saved_email)
               }
             }
           }
-
         }).catch(console.error)
-
       wx.hideLoading();
-      
+
     })
+  },
+
+  addemail: function (saved_email) {
+    db.collection('emails').add({
+      data: saved_email,
+      success: res => {
+        // 在返回结果中会包含新创建的记录的 _id
+        wx.showToast({
+          title: '新增邮件记录成功',
+        })
+        console.log('[数据库] [新增邮件记录] 成功，记录 _id: ', res._id)
+      },
+      fail: err => {
+        wx.showToast({
+          icon: 'none',
+          title: '新增邮件记录失败'
+        })
+        console.error('[数据库] [新增邮件记录] 失败：', err)
+      }
+    })
+  },
+
+  addinventory: function (saved_email) {
+    const body = saved_email.body;
+    var matches = body.matchAll(regexpNamePrice);
+    for (const match of matches) {
+      const {
+        Name,
+        Price,
+        UPC
+      } = match.groups;
+      console.log(Price, Name, UPC)
+      db.collection('inventory').add({
+        data: {
+          name: Name,
+          cost: Price,
+          UPC: UPC,
+        },
+        success: res => {
+          // 在返回结果中会包含新创建的记录的 _id
+          wx.showToast({
+            title: '新增库存记录成功',
+          })
+          console.log('[数据库] [新增库存记录] 成功，记录 _id: ', res._id)
+        },
+        fail: err => {
+          wx.showToast({
+            icon: 'none',
+            title: '新增库存记录失败'
+          })
+          console.error('[数据库] [新增库存记录] 失败：', err)
+        }
+      })
+    }
   },
 
   /**
