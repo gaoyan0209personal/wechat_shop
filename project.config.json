@@ -53,7 +53,13 @@
       "list": []
     },
     "miniprogram": {
-      "list": []
+      "list": [
+        {
+          "name": "user",
+          "pathName": "pages/user/user",
+          "scene": null
+        }
+      ]
     }
   }
 }

@@ -8,7 +8,8 @@ Page({
    * Page initial data
    */
   data: {
-
+    received_email: null, // the draft emails from cloud function receive.
+    account: null, // email login info, e.g. {name: "yan", addr: "yangao0209@qq.com", pass: "quapeernkkqahgdf", server: "qq.com", imap: Array(2), …}, this is saved in app as well
   },
 
   onGotUserInfo: function (event) {
@@ -36,9 +37,13 @@ Page({
   },
 
   loademail: async function (options, load_number) {
-    const oa = options.account
+    if (!app.globalData.openid) {
+      this.load_openid();
+    }
+    var len = 0;
+    const oa = options.account;
     console.log("0", oa);
-    var self = this
+    var self = this;
     await wx.cloud.callFunction({
       name: 'account'
     }).then(({
@@ -56,11 +61,18 @@ Page({
       })
       app.globalData.account = result
     })
-    console.log("1", "app.globalData.account", app.globalData.account);
     console.log("1", "this.data", self.data);
+    console.log("1", app.globalData.account);
     //当前账户
     const account = self.data.now
     console.log("2", account, typeof account);
+    wx.hideToast({ // close login window and start showloading popup until all the emails loaded
+      success: (res) => {
+        wx.showLoading({
+          title: '加载邮件中',
+        })
+      },
+    })
     await wx.cloud.callFunction({
       name: 'receive',
       data: {
@@ -68,19 +80,43 @@ Page({
         account
       }
     }).then(res => {
-      console.log(res)
-      // res.result.foreach(emailObject => {
-      // })
-      db.collection('emails').add({
-        data: res.result[0],
-        success: function (res) {
-          // res 是一个对象，其中有 _id 字段标记刚创建的记录的 id
-          console.log(res)
-        },
-        fail: err => {
-          console.log(err);
-        }
+      self.setData({
+        received_email: res,
+        email_len: res.result.length,
       })
+      db.collection('emails').where({
+          _openid: app.globalData.openid,
+        }).orderBy('time_id', 'desc')
+        .field({
+          _id: false,
+          time_id: true,
+        }).limit(1).get().then(res => {
+          console.log(res.data)
+
+          var i;
+          if (res.data.length == 0) {
+            for (i = 0; i < this.data.email_len; i++) {
+              const saved_email = this.data.received_email.result[i]
+              db.collection('emails').add({
+                data: saved_email,
+              })
+            }
+          } else {
+            const latest_date = res.data[0].time_id // latest email date
+            for (i = 0; i < this.data.email_len; i++) {
+              if (this.data.received_email.result[i].time_id > latest_date) {
+                const saved_email = this.data.received_email.result[i]
+                db.collection('emails').add({
+                  data: saved_email,
+                })
+              }
+            }
+          }
+
+        }).catch(console.error)
+
+      wx.hideLoading();
+      
     })
   },
 
