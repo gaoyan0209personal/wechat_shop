@@ -19,7 +19,7 @@
 
 </view>
 <view class="bottombuttons">
-	<van-button type="default" bindtap="addcategory">
+	<van-button class="bottombutton1" type="default" bindtap="addcategory">
 		+加分类
 		<text></text>
 	</van-button>

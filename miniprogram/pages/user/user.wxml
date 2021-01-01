@@ -1,0 +1,8 @@
+<!--pages/user/user.wxml-->
+<van-button type="primary" open-type="getUserInfo" bindgetuserinfo="onGotUserInfo" size="mini" bindtap="load_openid">
+  <text>+load_openid</text>
+</van-button>
+
+<van-button type="primary" bindtap="loademail">
+  +load_email
+</van-button>

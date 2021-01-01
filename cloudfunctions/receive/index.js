@@ -3,7 +3,6 @@ const cloud = require('wx-server-sdk')
 const mailClient = require('node-mail-client')
 var moment = require('moment')
 moment.locale('zh-cn')
-const regexpNamePrice = new RegExp(/(?<Name>.+)\s+\$(?<Price>.+)T\s+(?<PTC>\d+)\s+/, 'g');
 const coach = new RegExp(/Coach.*Receipt.*/, 'gm');
 
 cloud.init()
@@ -30,9 +29,12 @@ exports.main = async (event, context) => {
   })
   client.check = 1
   return await client.receive(total => {
-    return `1:${num}`
+    if (num >= total) {
+      return `1:*`
+    }
+    return `${total-num+1}:*`
   }).then(result => {
-    return result.reverse().filter(v => coach.test(v.header.subject[0]) == 1).map(v => {
+    return result.reverse().filter(v => v.header.subject[0].match(coach)).map(v => {
       const id = moment(v.attrs.date)
       const [name, from] = v.header.from[0].replace(/\>$/, '').split(' <')
       const time = moment(v.attrs.date).calendar(null, {

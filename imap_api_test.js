@@ -34,7 +34,7 @@ async function dowork() {
      imap.once('ready', function () {
           openInbox(function (err, box) {
                if (err) throw err;
-               imap.search(['all', ['SINCE', 'Dec 30, 2020']], function (err, results) {
+               imap.search(['all', ['SINCE', 'Dec 29, 2020']], function (err, results) {
                     if (err) throw err;
                     var f = imap.fetch(results, {
                          bodies: '1',
@@ -51,11 +51,12 @@ async function dowork() {
                               })
                               stream.once('end', function () {
                                    if (info.which === '1') {
-                                        // console.log("BUFFER" + buffer)
+                                        console
+                                        console.log("BUFFER" + buffer)
                                    }
                               });
                               console.log(prefix + 'Body');
-                              // stream.pipe(fs.createWriteStream('msg-' + seqno + '-body.txt'));
+                              stream.pipe(fs.createWriteStream('msg-' + seqno + '-body.txt'));
                          });
                          msg.once('attributes', function (attrs) {
                               console.log(prefix + 'Attributes: %s', inspect(attrs, false, 8));
