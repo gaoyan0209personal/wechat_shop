@@ -1,10 +1,9 @@
 const db = wx.cloud.database()
 const app = getApp()
-const regexpNamePrice = /(?<Name>.+)\s+\$(?<Price>.+)T\s+(?<UPC>\d+)\s+/gm;
-
+const regexpEachItem = /(?<Name>.+)\s+\$(?<Price>.+)T\s+(?<PTC>\d+)\s+(?<StyleNumber>\w+)\s+(?<Color>\w+)\s+(?<Quantity>\d+)\s@\s\$(?<OriginalPrice>.+)/g;
+const regexpTax = /SALES\sTAX\s-\s(?<Tax>.+)%/
 // pages/user/user.js
 Page({
-
   /**
    * Page initial data
    */
@@ -83,7 +82,7 @@ Page({
     }).then(res => {
       self.setData({
         received_email: res,
-        email_len: res.result.length,
+        email_len: res.result.length, // Uncaught (in promise) TypeError: Cannot read property 'length' of null
       })
       db.collection('emails').where({
           _openid: app.globalData.openid,
@@ -96,7 +95,7 @@ Page({
           if (res.data.length == 0) { // current user latest coach email, if user has.
             for (i = 0; i < this.data.email_len; i++) {
               const saved_email = this.data.received_email.result[i]
-              this.addemail(saved_email)
+              // this.addemail(saved_email)
               this.addinventory(saved_email)
             }
           } else {
@@ -104,14 +103,13 @@ Page({
             for (i = 0; i < this.data.email_len; i++) {
               if (this.data.received_email.result[i].time_id > latest_date) {
                 const saved_email = this.data.received_email.result[i]
-                this.addemail(saved_email)
+                // this.addemail(saved_email)
                 this.addinventory(saved_email)
               }
             }
           }
         }).catch(console.error)
       wx.hideLoading();
-
     })
   },
 
@@ -136,21 +134,16 @@ Page({
   },
 
   addinventory: function (saved_email) {
-    const body = saved_email.body;
-    var matches = body.matchAll(regexpNamePrice);
+    const emailBody = saved_email.body[0]  // saved_email.body is an array whose size is one
+    const emailTimeId = saved_email.time_id
+    const matches = emailBody.matchAll(regexpEachItem);
+    const tax = emailBody.match(regexpTax)[1];
     for (const match of matches) {
-      const {
-        Name,
-        Price,
-        UPC
-      } = match.groups;
-      console.log(Price, Name, UPC)
+      const item = match.groups;
+      item['Tax'] = tax;
+      item['EmailTimeID'] = emailTimeId
       db.collection('inventory').add({
-        data: {
-          name: Name,
-          cost: Price,
-          UPC: UPC,
-        },
+        data: item,
         success: res => {
           // 在返回结果中会包含新创建的记录的 _id
           wx.showToast({
@@ -167,6 +160,7 @@ Page({
         }
       })
     }
+    // return matches;
   },
 
   /**

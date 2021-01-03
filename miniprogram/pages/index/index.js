@@ -7,6 +7,10 @@ Page({
    * Page initial data
    */
   data: {
+    listType: 1, // 1为1个商品一行，2为2个商品一行    
+    name: '', // 搜索关键词
+    orderBy: '', // 排序规则
+
     classType: [],
     productList: [],
     productAll: [{
@@ -66,26 +70,15 @@ Page({
     })
   },
 
-  searchTab(e) {
-    var p = this.data.productAll;
-    var id = e.currentTarget.id;
-    console.log(e);
-    var list = [];
-    for (var i = 0; i < p.length; i++) {
-      if (p[i].classid == id) {
-        list.push(p[i])
-      }
-    }
-    this.setData({
-      productList: list
-    })
-  },
-
   /**
    * Lifecycle function--Called when page load
    */
   onLoad: function (options) {
-    
+    this.setData({
+      name: options.name,
+      categoryId: options.categoryId
+    })
+    this.search()
   },
 
   /**
@@ -113,7 +106,35 @@ Page({
 
     // })
   },
-
+  async search(){
+    // 搜索商品
+    // wx.showLoading({
+    //   title: '加载中',
+    // })
+    const _data = {
+      orderBy: this.data.orderBy,
+      page: 1,
+      pageSize: 500,
+    }
+    if (this.data.name) {
+      _data.k = this.data.name
+    }
+    if (this.data.categoryId) {
+      _data.categoryId = this.data.categoryId
+    }
+    console.log(_data)
+    // const res = await WXAPI.goods(_data)
+    // wx.hideLoading()
+    // if (res.code == 0) {
+    //   this.setData({
+    //     goods: res.data,
+    //   })
+    // } else {
+    //   this.setData({
+    //     goods: null,
+    //   })
+    // }
+  },
   /**
    * Lifecycle function--Called when page hide
    */
