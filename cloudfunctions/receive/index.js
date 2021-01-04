@@ -57,6 +57,7 @@ exports.main = async (event, context) => {
         to: v.header.to[0].replace(/^[\s\S]*\<|\>$/g, ''),
         seqno: v.seqno,
         time_id: id,
+        title: v.header.subject[0],
       }
     })
   }).catch(e => null)

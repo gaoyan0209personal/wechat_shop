@@ -1,6 +1,6 @@
 const db = wx.cloud.database()
 const app = getApp()
-const regexpEachItem = /(?<Name>.+)\s+\$(?<Price>.+)T\s+(?<PTC>\d+)\s+(?<StyleNumber>\w+)\s+(?<Color>\w+)\s+(?<Quantity>\d+)\s@\s\$(?<OriginalPrice>.+)/g;
+const regexpEachItem = /(?<Name>.+)\s+\$(?<Price>.+)T\s+(?<UPC>\d+)\s+(?<StyleNumber>\w+)\s+(?<Color>\w+)\s+(?<Quantity>\d+)\s@\s\$(?<OriginalPrice>.+)/g;
 const regexpTax = /SALES\sTAX\s-\s(?<Tax>.+)%/
 // pages/user/user.js
 Page({
@@ -138,10 +138,12 @@ Page({
     const emailTimeId = saved_email.time_id
     const matches = emailBody.matchAll(regexpEachItem);
     const tax = emailBody.match(regexpTax)[1];
+    const title = saved_email.title
     for (const match of matches) {
       const item = match.groups;
       item['Tax'] = tax;
-      item['EmailTimeID'] = emailTimeId
+      item['EmailTimeID'] = emailTimeId;
+      item['EmailTitle'] = title;
       db.collection('inventory').add({
         data: item,
         success: res => {

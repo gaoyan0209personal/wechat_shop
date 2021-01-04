@@ -11,11 +11,12 @@ Page({
   },
   //事件处理函数
   bindViewTap: function() {
-    wx.navigateTo({
-      url: '../orders/orders'
+    wx.switchTab({
+      url: '../index/index'
     })
   },
   onLoad: function () {
+    console.log(this.data)
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
@@ -45,6 +46,7 @@ Page({
   },
   getUserInfo: function(e) {
     console.log(e)
+    this.bindViewTap();
     app.globalData.userInfo = e.detail.userInfo
     this.setData({
       userInfo: e.detail.userInfo,

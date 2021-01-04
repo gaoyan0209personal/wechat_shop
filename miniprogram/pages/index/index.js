@@ -8,54 +8,10 @@ Page({
    */
   data: {
     listType: 1, // 1为1个商品一行，2为2个商品一行    
-    name: '', // 搜索关键词
+    name: '', // 搜索关键词 
     orderBy: '', // 排序规则
-
-    classType: [],
-    productList: [],
-    productAll: [{
-        "id": 1,
-        "name": "华为Mate 30",
-        "price": 4099,
-        "src": "/images/mate30.jpg",
-        "classid": 1,
-      },
-      {
-        "id": 2,
-        "name": "华为Mate 20",
-        "price": 2099,
-        "src": "/images/mate20.jpg",
-        "classid": 1,
-      },
-      {
-        "id": 3,
-        "name": "爆款清仓",
-        "price": 99,
-        "src": "/images/airpods.jpg",
-        "classid": 2,
-      },
-      {
-        "id": 4,
-        "name": "华为Mate 20",
-        "price": 2099,
-        "src": "/images/mate20.jpg",
-        "classid": 1,
-      },
-      {
-        "id": 5,
-        "name": "华为Mate 20",
-        "price": 2099,
-        "src": "/images/mate20.jpg",
-        "classid": 1,
-      },
-      {
-        "id": 6,
-        "name": "华为Mate 20",
-        "price": 2099,
-        "src": "/images/mate20.jpg",
-        "classid": 1,
-      }
-    ]
+    goods: null,
+    allgoods: null,
   },
 
   addcategory(e) {
@@ -70,15 +26,123 @@ Page({
     })
   },
 
+  async search() {
+    // 搜索商品
+    wx.showLoading({
+      title: '加载中',
+    })
+    console.log(this.data.orderBy, this.data.name)
+    this.setData({
+      goods: this.data.allgoods.filter(word => word[this.data.orderBy] == this.data.name)
+    })
+    const _data = {
+      orderBy: this.data.orderBy,
+      page: 1,
+      pageSize: 500,
+    }
+    if (this.data.name) {
+      _data.k = this.data.name
+    }
+    if (this.data.categoryId) {
+      _data.categoryId = this.data.categoryId
+    }
+    console.log(this.data.goods, this.data.allgoods)
+    // db.collection("inventory").where({
+    //   // _openid: app.globalData.openid,
+    // }).orderBy('id', 'desc').get({
+    //   success(res) {
+    //     that.setData({
+    //       goods: res.data
+    //     })
+    //   },
+    //   fail(res) {
+    //     console.log("请求失败", res)
+    //   }
+    // })
+    wx.hideLoading()
+  },
+
+  async getGoodsList() {
+    wx.showLoading({
+      title: '加载中',
+    })
+    await db.collection('inventory').where({
+      // _openid: app.globalData.openid,
+    }).orderBy('EmailTimeID', 'desc').get().then(res => { //TODO: need to consider case that has above 20 items.
+      this.setData({
+        goods: res.data,
+        allgoods: res.data,
+      })
+    })
+    wx.hideLoading()
+    // if (res.code == 700) {
+    //   if (this.data.page == 1) {
+    //     this.setData({
+    //       currentGoods: null
+    //     });
+    //   } else {
+    //     wx.showToast({
+    //       title: '没有更多了',
+    //       icon: 'none'
+    //     })
+    //   }
+    //   return
+    // }
+    // if (this.data.page == 1) {
+    //   this.setData({
+    //     currentGoods: res.data
+    //   })
+    // } else {
+    //   this.setData({
+    //     currentGoods: this.data.currentGoods.concat(res.data)
+    //   })
+    // }
+  },
+
+  filter(e) {
+    console.log("filter")
+    console.log(e.currentTarget.dataset.val)
+    this.setData({
+      orderBy: e.currentTarget.dataset.val
+    })
+    this.search()
+  },
+
+  bindinput(e){
+    this.setData({
+      name: e.detail.value
+    })
+  },
+  
+  bindconfirm(e){
+    this.setData({
+      name: e.detail.value
+    })
+    this.search()
+  },
+
+  changeShowType(){
+    if (this.data.listType == 1) {
+      this.setData({
+        listType: 2
+      })
+    } else {
+      this.setData({
+        listType: 1
+      })
+    }
+  },
+
   /**
    * Lifecycle function--Called when page load
    */
   onLoad: function (options) {
+    console.log(options)
     this.setData({
       name: options.name,
       categoryId: options.categoryId
     })
-    this.search()
+    this.getGoodsList();
   },
 
   /**
@@ -92,49 +156,9 @@ Page({
    * Lifecycle function--Called when page show
    */
   onShow: function () {
-    console.log("index page onshow run successfully ")
-    let that = this
-    // db.collection("categories").get({
-    //   success(res) {
-    //     that.setData({
-    //       classType: res.data
-    //     })
-    //   },
-    //   fail(res) {
-    //     console.log("请求失败", res)
-    //   }
 
-    // })
   },
-  async search(){
-    // 搜索商品
-    // wx.showLoading({
-    //   title: '加载中',
-    // })
-    const _data = {
-      orderBy: this.data.orderBy,
-      page: 1,
-      pageSize: 500,
-    }
-    if (this.data.name) {
-      _data.k = this.data.name
-    }
-    if (this.data.categoryId) {
-      _data.categoryId = this.data.categoryId
-    }
-    console.log(_data)
-    // const res = await WXAPI.goods(_data)
-    // wx.hideLoading()
-    // if (res.code == 0) {
-    //   this.setData({
-    //     goods: res.data,
-    //   })
-    // } else {
-    //   this.setData({
-    //     goods: null,
-    //   })
-    // }
-  },
+
   /**
    * Lifecycle function--Called when page hide
    */
