@@ -3,6 +3,7 @@
     "pages/login/login",
     "pages/index/index",
     "pages/orders/orders",
+    "pages/goods-details/index",
     "pages/additem/additem",
     "pages/addcategory/addcategory",
     "pages/addorder/addorder",
@@ -36,6 +37,7 @@
       }
     ]
   },
+  
   "style": "v2",
   "sitemapLocation": "sitemap.json"
 }

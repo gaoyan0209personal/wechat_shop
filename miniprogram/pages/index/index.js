@@ -2,7 +2,6 @@ const db = wx.cloud.database()
 const app = getApp()
 
 Page({
-
   /**
    * Page initial data
    */
@@ -46,19 +45,6 @@ Page({
     if (this.data.categoryId) {
       _data.categoryId = this.data.categoryId
     }
-    console.log(this.data.goods, this.data.allgoods)
-    // db.collection("inventory").where({
-    //   // _openid: app.globalData.openid,
-    // }).orderBy('id', 'desc').get({
-    //   success(res) {
-    //     that.setData({
-    //       goods: res.data
-    //     })
-    //   },
-    //   fail(res) {
-    //     console.log("请求失败", res)
-    //   }
-    // })
     wx.hideLoading()
   },
 
@@ -75,28 +61,6 @@ Page({
       })
     })
     wx.hideLoading()
-    // if (res.code == 700) {
-    //   if (this.data.page == 1) {
-    //     this.setData({
-    //       currentGoods: null
-    //     });
-    //   } else {
-    //     wx.showToast({
-    //       title: '没有更多了',
-    //       icon: 'none'
-    //     })
-    //   }
-    //   return
-    // }
-    // if (this.data.page == 1) {
-    //   this.setData({
-    //     currentGoods: res.data
-    //   })
-    // } else {
-    //   this.setData({
-    //     currentGoods: this.data.currentGoods.concat(res.data)
-    //   })
-    // }
   },
 
   filter(e) {
