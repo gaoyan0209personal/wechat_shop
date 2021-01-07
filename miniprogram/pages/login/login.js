@@ -11,6 +11,7 @@ Page({
   },
   //事件处理函数
   bindViewTap: function() {
+    this.load_openid();
     wx.switchTab({
       url: '../index/index'
     })
@@ -46,11 +47,30 @@ Page({
   },
   getUserInfo: function(e) {
     console.log(e)
-    this.bindViewTap();
     app.globalData.userInfo = e.detail.userInfo
     this.setData({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
     })
-  }
+  },
+
+  load_openid: function (options) {
+    wx.cloud.callFunction({
+      name: 'login',
+      data: {},
+      success: res => {
+        console.log('[云函数] [login] user openid: ', res.result.openid)
+        app.globalData.openid = res.result.openid
+        wx.showToast({
+          title: '用户登录成功',
+        })
+      },
+      fail: err => {
+        console.error('[云函数] [login] 调用失败', err)
+        wx.showToast({
+          title: '用户登录失败',
+        })
+      }
+    })
+  },
 })

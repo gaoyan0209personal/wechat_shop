@@ -2,12 +2,14 @@
   "pages": [
     "pages/login/login",
     "pages/index/index",
-    "pages/orders/orders",
     "pages/goods-details/index",
+    "pages/order/index",
+    "pages/orders/orders",
+    "pages/user/user",
+    
     "pages/additem/additem",
     "pages/addcategory/addcategory",
-    "pages/addorder/addorder",
-    "pages/user/user"
+    "pages/addorder/addorder"
   ],
   "window": {
     "backgroundTextStyle": "light",

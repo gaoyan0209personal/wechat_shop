@@ -26,8 +26,6 @@ Page({
     shopType: "addShopCar", //购物类型，加入购物车或立即购买，默认为加入购物车
     curGoodsKanjia: 0 ,
   },
-
-  // gotoorder
   async onLoad(e) {
     this.setData(e)
   //   if (e && e.scene) {

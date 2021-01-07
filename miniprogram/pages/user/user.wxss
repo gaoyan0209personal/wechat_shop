@@ -1,1 +1,289 @@
 /* pages/user/user.wxss */
+.user-card{
+  justify-content: space-around;
+  margin: 50rpx;
+  border: solid 0.5rpx #eaeaea;
+  border-radius: 15rpx;
+  box-shadow: 1rpx 2rpx 50rpx 5rpx #eaeaea;
+}
+
+.user-info{
+  display: flex;
+  margin: 20rpx 20rpx 20rpx 0 ;
+  align-items: center;
+  opacity: 0.9;
+  height: 95rpx;
+  flex-shrink: 0;
+}
+
+.line{
+  margin-left: 5%;
+  margin-right: 5%;
+  background-color: #eaeaea;
+  height: 0.5rpx;
+}
+
+.user-real-info{
+  margin: 30rpx 110rpx;
+  font-size: 25rpx;
+}
+
+.cu-form-group {
+  background-color: #fff;
+  padding: 1rpx 30rpx;
+  display: flex;
+  align-items: center;
+  min-height: 100rpx;
+  justify-content: space-between;
+}
+
+.cu-form-group+.cu-form-group {
+  border-top: 1rpx solid #eee;
+}
+
+.cu-form-group .title {
+  text-align: justify;
+  padding-right: 30rpx;
+  font-size: 30rpx;
+  position: relative;
+  height: 60rpx;
+  line-height: 60rpx;
+}
+
+.cu-form-group input {
+  flex: 1;
+  font-size: 30rpx;
+  color: #555;
+  padding-right: 20rpx;
+}
+
+.cu-form-group>text[class*="icon"] {
+  font-size: 36rpx;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.cu-form-group.top .title {
+  height: 1em;
+  line-height: 1;
+  align-self: flex-start;
+  margin-top: 16px;
+}
+
+.cu-form-group textarea {
+  margin: 32rpx 0 30rpx;
+  height: 4.6em;
+  width: 100%;
+  line-height: 1.2em;
+  flex: 1;
+  font-size: 28rpx;
+  padding: 0;
+  box-sizing: content-box;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.cu-form-group textarea .placeholder {
+  color: transparent;
+}
+
+.cu-form-group textarea::after {
+  content: attr(data-placeholder);
+  color: gray;
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  transition: 0.2s;
+  opacity: 1;
+}
+
+.cu-form-group textarea.value::after {
+  opacity: 0;
+}
+
+.cu-form-group picker {
+  flex: 1;
+  padding-right: 40rpx;
+  overflow: hidden;
+  position: relative;
+}
+
+.cu-form-group picker .picker {
+  line-height: 100rpx;
+  font-size: 28rpx;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+  text-align: right;
+}
+
+.cu-form-group picker::after {
+  font-family: cuIcon;
+  display: block;
+  content: "\e6a3";
+  position: absolute;
+  font-size: 34rpx;
+  color: var(--grey);
+  line-height: 100rpx;
+  width: 60rpx;
+  text-align: center;
+  top: 0;
+  bottom: 0;
+  right: -20rpx;
+  margin: auto;
+}
+
+.cu-form-group textarea[disabled],
+.cu-form-group textarea[disabled] .placeholder {
+  color: transparent;
+}
+
+
+
+
+
+.header-box {
+  padding: 32rpx;
+  display: flex;
+  align-items: center;
+}
+.header-box .avatar {
+  width: 128rpx;
+  height: 128rpx;
+  border-radius: 50%;
+}
+.header-box .btn {
+  margin-left: 32rpx;
+}
+.header-box .r {
+  margin-left: 32rpx;
+  color: #333;
+  font-size: 28rpx;
+}
+
+page,view,image,input {
+  display: block;
+  box-sizing: border-box;
+}
+
+.container{
+  min-height: 100%;
+  overflow: hidden;
+  overflow-y: hidden;
+}
+
+.asset {
+  display: flex;
+  border-top: 1px solid #eee;
+  padding-top:20rpx;
+  padding-bottom:20rpx;
+}
+.asset .item {
+  display: flex;
+  flex-direction: column;
+  width:187rpx;
+  text-align: center;
+  font-size: 13px;
+  line-height: 20px;
+  color:#333;
+}
+.asset .right {
+  border-left: 1px solid #eee;
+}
+
+.version {
+  width:100vw;
+	font-size: 24rpx;
+	text-align: center;
+  padding: 32rpx;
+}
+
+.order-shortcut {
+  display: flex;
+  padding-top: 20rpx;
+  padding-bottom: 20rpx;
+}
+.order-shortcut .item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 150rpx;
+  text-align: center;
+}
+.order-shortcut .item .dot {
+  position: absolute;
+  right: 20rpx;
+  top: -8rpx;
+  min-width: 32rpx;
+  height: 32rpx;
+  padding: 0 7rpx;
+  line-height: 32rpx;
+  font-size: 18rpx;
+  border-radius: 32rpx;
+  background: #FF4949;
+  color: #fff;
+  text-align: center;
+}
+.order-shortcut .item .icon {
+  width: 67rpx;
+  height: 67rpx;
+  margin-left: 45rpx;
+}
+.order-shortcut .item .text {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: #323233;
+}
+.to-authorize{
+  padding: 0rpx;
+  margin: 0rpx;
+  background: none;
+  border: none;
+  height: auto;
+  line-height: auto;
+}
+/* 绑定手机号 */
+.bind-phone-number{
+  margin: 20rpx;
+  width: 100%;
+}
+/* flex重新构建菜单 */
+.menu-item {
+  width: 100vw;
+  height: 104rpx;
+  padding: 0 32rpx;
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.menu-item .l {
+  font-size:34rpx;
+  color:#333;
+  line-height:104rpx;
+}
+.menu-item .r {
+  font-size:32rpx;
+  color:#999;
+  line-height:104rpx;
+}
+.menu-item .next {
+  width: 40rpx;
+  height: 40rpx;
+}
+.menu-item button {
+  margin: 0;
+}
+.space {
+  width: 100vw;
+  height: 8rpx;
+  background: #F4F5F9;
+}
+.line {
+  width:718px;
+  height:1px;
+  background:#EEEEEE;
+  margin-left: 32rpx;
+}

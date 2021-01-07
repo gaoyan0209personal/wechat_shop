@@ -4,17 +4,16 @@
     <view class="goods-title">{{name}}</view>
     <view class="goods-profile">
       <view class="p"><text>$</text> {{price}} </view>
-      <view wx:if="{{originalprice && originalprice > 0}}" class="goods-price"
-        style='color:#aaa;text-decoration:line-through;padding: 15rpx 0rpx 0rpx 15rpx;'><text>$</text> {{originalprice}}
-      </view>
+      <view wx:if="{{originalprice && originalprice > 0}}" class="goods-price" style='color:#aaa;text-decoration:line-through;padding: 15rpx 0rpx 0rpx 15rpx;'><text>$</text> {{originalprice}}</view>
       <view class="r">数量 {{quantity}} 件</view>
     </view>
     <view class="goods-info-fx">
       <view class='item'>
-        <navigator
-          url="/pages/order/index?id={{id}}&color={{color}}&emailtimeid={{emailtimeid}}&emailtitle={{emailtitle}}&name={{name}}&originalprice={{originalprice}}&price={{price}}&quantity={{quantity}}&stylenumber={{stylenumber}}&tax={{tax}}&upc={{upc}}">
-          <image class="car" mode="aspectFill" src="/images/nav/order-on.png"></image>
-        </navigator>
+        <image src='/images/share/share1.png'></image>
+        <button open-type='share'></button>
+      </view>
+      <view class='item' bindtap="drawSharePic">
+        <image src='/images/share/share2.png'></image>
       </view>
     </view>
   </view>
@@ -39,12 +38,12 @@
         <view class="weui-cell__ft">{{color}}</view>
       </view>
       <view class="weui-cell">
-        <view class="weui-cell__bd">邮件时间</view>
-        <view class="weui-cell__ft">{{emailtimeid}}</view>
+        <view class="weui-cell__bd">买家</view>
+        <view class="weui-cell__ft"></view>
       </view>
       <view class="weui-cell">
-        <view class="weui-cell__bd">邮件</view>
-        <view class="weui-cell__ft">{{emailtitle}}</view>
+        <view class="weui-cell__bd">包裹追踪</view>
+        <view class="weui-cell__ft"></view>
       </view>
     </view>
   </view>

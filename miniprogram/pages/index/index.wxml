@@ -16,7 +16,7 @@
 </van-sticky>
 <van-empty wx:if="{{ !goods || goods.length == 0 }}" description="暂无商品" />
 <block wx:if="{{listType == 1}}">
-  <view class="list1" wx:for="{{goods}}" wx:key="id">
+  <view class="list1" wx:for="{{goods}}" wx:key="_id">
     <!-- <navigator url="/pages/goods-details/index?id={{item.id}}"><image class="img" mode="aspectFill" src="{{item.pic}}"></image></navigator> -->
     <view class="goods-info">
       <view class="title ellipsis">
@@ -31,7 +31,8 @@
       <view class="buy-info">
         <view class="num">数量{{item.Quantity}}件 {{item.StyleNumber}}</view>
         <view class="num">{{item.UPC}}</view>
-        <image class="car" src="/images/icon/car.svg" data-id="{{item._id}}" bindtap="addShopCar"></image>
+        <navigator url="/pages/order/index?id={{item._id}}&color={{item.Color}}&emailtimeid={{item.EmailTimeID}}&emailtitle={{item.EmailTitle}}&name={{item.Name}}&originalprice={{item.OriginalPrice}}&price={{item.Price}}&quantity={{item.Quantity}}&stylenumber={{item.StyleNumber}}&tax={{item.Tax}}&upc={{item.UPC}}"><image class="car" mode="aspectFill" src="/images/nav/order-on.png"></image></navigator>
+        <!-- <image class="car" src="/images/icon/car.svg" data-id="{{item._id}}" bindtap="addShopCar"></image> -->
       </view>
     </view>
   </view>

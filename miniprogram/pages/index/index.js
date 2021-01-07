@@ -25,25 +25,19 @@ Page({
     })
   },
 
-  async search() {
+  async search(e) {
     // 搜索商品
     wx.showLoading({
       title: '加载中',
     })
-    console.log(this.data.orderBy, this.data.name)
-    this.setData({
-      goods: this.data.allgoods.filter(word => word[this.data.orderBy] == this.data.name)
-    })
-    const _data = {
-      orderBy: this.data.orderBy,
-      page: 1,
-      pageSize: 500,
-    }
-    if (this.data.name) {
-      _data.k = this.data.name
-    }
-    if (this.data.categoryId) {
-      _data.categoryId = this.data.categoryId
+    if (!this.data.orderBy) {
+      this.setData({
+        goods: this.data.allgoods
+      })
+    } else {
+      this.setData({
+        goods: this.data.allgoods.filter(word => word[this.data.orderBy] == this.data.name)
+      })
     }
     wx.hideLoading()
   },
@@ -53,7 +47,7 @@ Page({
       title: '加载中',
     })
     await db.collection('inventory').where({
-      // _openid: app.globalData.openid,
+      _openid: app.globalData.openid,
     }).orderBy('EmailTimeID', 'desc').get().then(res => { //TODO: need to consider case that has above 20 items.
       this.setData({
         goods: res.data,
@@ -64,28 +58,26 @@ Page({
   },
 
   filter(e) {
-    console.log("filter")
-    console.log(e.currentTarget.dataset.val)
     this.setData({
       orderBy: e.currentTarget.dataset.val
     })
     this.search()
   },
 
-  bindinput(e){
+  bindinput(e) {
     this.setData({
       name: e.detail.value
     })
   },
-  
-  bindconfirm(e){
+
+  bindconfirm(e) {
     this.setData({
       name: e.detail.value
     })
     this.search()
   },
 
-  changeShowType(){
+  changeShowType() {
     if (this.data.listType == 1) {
       this.setData({
         listType: 2
@@ -101,7 +93,6 @@ Page({
    * Lifecycle function--Called when page load
    */
   onLoad: function (options) {
-    console.log(options)
     this.setData({
       name: options.name,
       categoryId: options.categoryId
@@ -119,9 +110,7 @@ Page({
   /**
    * Lifecycle function--Called when page show
    */
-  onShow: function () {
-
-  },
+  onShow: function () {},
 
   /**
    * Lifecycle function--Called when page hide
@@ -141,7 +130,11 @@ Page({
    * Page event handler function--Called when user drop down
    */
   onPullDownRefresh: function () {
-
+    this.setData({
+      orderBy: ""
+    })
+    this.getGoodsList();
+    wx.stopPullDownRefresh();
   },
 
   /**

@@ -38,7 +38,7 @@ swiper-item image {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 50rpx;
+  width: 130rpx;
 }
 .goods-info-fx .item {
   width: 50rpx;

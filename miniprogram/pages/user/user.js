@@ -8,6 +8,20 @@ Page({
    * Page initial data
    */
   data: {
+    balance: 0.00,
+    freeze: 0,
+    score: 0,
+    growth: 0,
+    score_sign_continuous: 0,
+    rechargeOpen: false, // 是否开启充值[预存]功能
+    checkSta: 0,
+
+    // 用户订单统计数据
+    count_id_no_confirm: 0,
+    count_id_no_pay: 0,
+    count_id_no_reputation: 0,
+    count_id_no_transfer: 0,
+
     received_email: null, // the draft emails from cloud function receive.
     account: null, // email login info, e.g. {name: "yan", addr: "yangao0209@qq.com", pass: "quapeernkkqahgdf", server: "qq.com", imap: Array(2), …}, this is saved in app as well
   },
@@ -16,29 +30,16 @@ Page({
     console.log(event)
   },
 
-  load_openid: function (options) {
-    wx.cloud.callFunction({
-      name: 'login',
-      data: {},
-      success: res => {
-        console.log('[云函数] [login] user openid: ', res.result.openid)
-        app.globalData.openid = res.result.openid
-        wx.showToast({
-          title: '用户登录成功',
+  loademail: async function (options, load_number) {
+    wx.hideToast({ // close login window and start showloading popup until all the emails loaded
+      success: (res) => {
+        wx.showLoading({
+          title: '加载邮件中',
         })
       },
-      fail: err => {
-        console.error('[云函数] [login] 调用失败', err)
-        wx.showToast({
-          title: '用户登录失败',
-        })
-      }
     })
-  },
-
-  loademail: async function (options, load_number) {
     if (!app.globalData.openid) {
-      this.load_openid();
+      // this.load_openid();
     }
     var len = 0;
     const oa = options.account;
@@ -66,13 +67,6 @@ Page({
     //当前账户
     const account = self.data.now
     console.log("2", account, typeof account);
-    wx.hideToast({ // close login window and start showloading popup until all the emails loaded
-      success: (res) => {
-        wx.showLoading({
-          title: '加载邮件中',
-        })
-      },
-    })
     await wx.cloud.callFunction({
       name: 'receive',
       data: {
@@ -95,7 +89,7 @@ Page({
           if (res.data.length == 0) { // current user latest coach email, if user has.
             for (i = 0; i < this.data.email_len; i++) {
               const saved_email = this.data.received_email.result[i]
-              // this.addemail(saved_email)
+              this.addemail(saved_email)
               this.addinventory(saved_email)
             }
           } else {
@@ -103,7 +97,7 @@ Page({
             for (i = 0; i < this.data.email_len; i++) {
               if (this.data.received_email.result[i].time_id > latest_date) {
                 const saved_email = this.data.received_email.result[i]
-                // this.addemail(saved_email)
+                this.addemail(saved_email)
                 this.addinventory(saved_email)
               }
             }
@@ -134,7 +128,7 @@ Page({
   },
 
   addinventory: function (saved_email) {
-    const emailBody = saved_email.body[0]  // saved_email.body is an array whose size is one
+    const emailBody = saved_email.body[0] // saved_email.body is an array whose size is one
     const emailTimeId = saved_email.time_id
     const matches = emailBody.matchAll(regexpEachItem);
     const tax = emailBody.match(regexpTax)[1];
@@ -176,7 +170,10 @@ Page({
    * Lifecycle function--Called when page is initially rendered
    */
   onReady: function () {
-
+    this.setData({
+      userInfo: app.globalData.userInfo, 
+    });
+    console.log(this.data)
   },
 
   /**
