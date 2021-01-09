@@ -89,7 +89,7 @@ Page({
    * Lifecycle function--Called when page load
    */
   onLoad: function (options) {
-    wx.cloud.init()
+    // wx.cloud.init()
   },
 
   /**

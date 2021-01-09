@@ -14,7 +14,7 @@ Page({
     growth: 0,
     score_sign_continuous: 0,
     rechargeOpen: false, // 是否开启充值[预存]功能
-    checkSta: 0,
+    checkSta: 1,
 
     // 用户订单统计数据
     count_id_no_confirm: 0,
@@ -50,7 +50,7 @@ Page({
     }).then(({
       result
     }) => {
-      let now = result[0]
+      let now = result[0] // result has all emails.
       console.log("0", now)
       if (oa) {
         now = result.find(v => v.addr = oa)
@@ -163,24 +163,29 @@ Page({
    * Lifecycle function--Called when page load
    */
   onLoad: function (options) {
-
+    this.setData({
+      userInfo: app.globalData.userInfo,
+      openid: app.globalData.openid,
+    });
+    // db.collection("user").doc(this.data.openid).get().then(res => {
+    //   console.log(res)
+    //   })
   },
 
   /**
    * Lifecycle function--Called when page is initially rendered
    */
   onReady: function () {
-    this.setData({
-      userInfo: app.globalData.userInfo, 
-    });
-    console.log(this.data)
+
   },
 
   /**
    * Lifecycle function--Called when page show
    */
   onShow: function () {
-
+    // this.setData({
+    //   userInfo: app.globalData.userInfo,
+    // });
   },
 
   /**
@@ -216,5 +221,26 @@ Page({
    */
   onShareAppMessage: function () {
 
-  }
+  },
+
+  toBind(e) {
+    console.log('form发生了submit事件，携带数据为：', e.detail.value)
+    db.collection("user").where({
+      _openid: this.data.openid
+    }).get().then(res => {
+      if (res.data.length == 0) {
+        // db.collection("user").add(
+
+
+
+        // )
+      } else {
+
+      }
+    }).catch(
+      console.error
+    )
+
+
+  },
 })

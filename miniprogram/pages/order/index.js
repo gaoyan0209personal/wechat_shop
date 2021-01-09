@@ -1,9 +1,5 @@
-// const WXAPI = require('apifm-wxapi')
 const app = getApp();
-// const CONFIG = require('../../config.js')
-// const AUTH = require('../../utils/auth')
 const SelectSizePrefix = "选择："
-// import Poster from 'wxa-plugin-canvas/poster/poster'
 
 Page({
   data: {

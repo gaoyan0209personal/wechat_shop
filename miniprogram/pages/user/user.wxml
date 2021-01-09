@@ -1,7 +1,7 @@
 <!--pages/user/user.wxml-->
 <view class="user-card">
   <view class='user-info'>
-    <!-- <image class='user-head' mode='aspectFit' src="{{userInfo?userInfo.avatarUrl: '../../images/mate30.png'}}"></image> -->
+    <image class='user-head' mode='aspectFit' src="{{userInfo?userInfo.avatarUrl: '../../images/user.png'}}"></image>
     <view class='user-name'>{{!!userInfo?userInfo.nickName:""}}</view>
     <view class="user-name-1">您好，以下是您的信息:</view>
   </view>
@@ -9,27 +9,28 @@
   <view wx:if="{{checkSta==1}}" class="user-real-info">
     <view>您好，你在系统内绑定的信息是：</view>
     <view>邮箱是： {{relName}}</view>
-    <view>IMAP密码是： {{num}}</view>
+    <!-- <view>IMAP密码是： {{num}}</view> -->
+    <view class="header-box">
+      <image class="avatar" src="/images/no-order.png"></image>
+      <van-button plain type="info" lang="zh_CN" bindtap="loademail">点击加载邮件</van-button>
+    </view>
+
   </view>
   <view wx:if="{{checkSta==0}}" class="user-real-info">请先在填写下面的表格来绑定用户信息！</view>
 </view>
 <form wx:if="{{checkSta==0}}" bindsubmit="toBind">
   <view class="cu-form-group">
     <view class="title">邮箱</view>
-    <input name="name" placeholder="请输入邮箱" confirm-type="next" value="{{name}}"></input>
+    <input name="name" placeholder="请输入邮箱" confirm-type="next" value="{{emailaddress}}"></input>
   </view>
   <view class="cu-form-group">
     <view class="title">密码</view>
-    <input name="num" placeholder="请输入IMAP密码" type="number"  value="{{num}}"></input>
+    <input name="num" placeholder="请输入IMAP密码" type="number" value="{{password}}"></input>
   </view>
   <button class="cu-btn block bg-orange margin-tb-sm user-form-button" form-type="submit">提交
   </button>
 </form>
 
-<view class="header-box">
-  <image class="avatar" src="/images/no-order.png"></image>
-	<van-button plain type="info" lang="zh_CN" bindtap="loademail">点击加载邮件</van-button>
-</view>
 
 <view class="container">
   <view class="asset">
@@ -90,7 +91,9 @@
     <view class="line"></view>
     <navigator url="/pages/peisong/orders">
       <view class="menu-item">
-        <view class="l hongdian-box">配送订单<view wx:if="{{peisongOrderNumber}}" class="hongdian">{{peisongOrderNumber}}</view></view>
+        <view class="l hongdian-box">配送订单<view wx:if="{{peisongOrderNumber}}" class="hongdian">{{peisongOrderNumber}}
+          </view>
+        </view>
         <image class="next" src="/images/icon/next.png"></image>
       </view>
     </navigator>
@@ -98,7 +101,9 @@
       <view class="line"></view>
       <navigator url="/pages/peisong/orders?status=1">
         <view class="menu-item">
-          <view class="l hongdian-box">待分配订单<view wx:if="{{peisongOrderNumber2}}" class="hongdian">{{peisongOrderNumber2}}</view></view>
+          <view class="l hongdian-box">待分配订单<view wx:if="{{peisongOrderNumber2}}" class="hongdian">
+              {{peisongOrderNumber2}}</view>
+          </view>
           <image class="next" src="/images/icon/next.png"></image>
         </view>
       </navigator>

@@ -31,10 +31,17 @@ Page({
       title: '加载中',
     })
     if (!this.data.orderBy) {
+      console.log("1")
       this.setData({
         goods: this.data.allgoods
       })
+    } else if (this.data.orderBy == "Name") {
+      console.log("2")
+      this.setData({
+        goods: this.data.allgoods.filter(word => word[this.data.orderBy].includes(this.data.name))
+      })
     } else {
+      console.log("3")
       this.setData({
         goods: this.data.allgoods.filter(word => word[this.data.orderBy] == this.data.name)
       })

@@ -6,9 +6,13 @@ const db = cloud.database()
 
 // 云函数入口函数
 exports.main = async (event, context) => {
+  console.log(
+    "event",event,"context", context
+  )
   const { addr } = event
   const openid = cloud.getWXContext().OPENID
   let mails = await db.collection('user').doc(openid).get().then(res => {
+    console.log("res in account", res)
     return res.data.mails
   })
   if (addr) {

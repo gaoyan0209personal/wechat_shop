@@ -9,6 +9,7 @@
   </view>
   <view class="filters">
     <view class="item {{orderBy==''?'active':''}}" data-val="" bindtap="filter">全部</view>
+    <view class="item {{orderBy=='Name'?'active':''}}" data-val="Name" bindtap="filter">名字</view>
     <view class="item {{orderBy=='UPC'?'active':''}}" data-val="UPC" bindtap="filter">UPC</view>
     <view class="item {{orderBy=='StyleNumber'?'active':''}}" data-val="StyleNumber" bindtap="filter">StyleNumber</view>
     <view class="item {{orderBy=='brand'?'active':''}}" data-val="brand" bindtap="filter">品牌</view>
