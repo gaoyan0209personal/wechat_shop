@@ -30,6 +30,9 @@ Page({
   // gotoorder
   async onLoad(e) {
     this.setData(e)
+    this.setData({
+      aftertax:(Number(e.price) * (Number(e.tax)/100+1)).toFixed(2)
+    })
   //   if (e && e.scene) {
   //     const scene = decodeURIComponent(e.scene) // 处理扫码进商品详情页面的逻辑
   //     if (scene && scene.split(',').length >= 2) {

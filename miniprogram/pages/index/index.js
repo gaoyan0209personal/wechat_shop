@@ -13,35 +13,20 @@ Page({
     allgoods: null,
   },
 
-  addcategory(e) {
-    wx.navigateTo({
-      url: '/pages/addcategory/addcategory',
-    })
-  },
-
-  additem(e) {
-    wx.navigateTo({
-      url: '/pages/additem/additem',
-    })
-  },
-
   async search(e) {
     // 搜索商品
     wx.showLoading({
       title: '加载中',
     })
     if (!this.data.orderBy) {
-      console.log("1")
       this.setData({
         goods: this.data.allgoods
       })
-    } else if (this.data.orderBy == "Name") {
-      console.log("2")
+    } else if (this.data.orderBy == "Name" && this.data.name) {
       this.setData({
-        goods: this.data.allgoods.filter(word => word[this.data.orderBy].includes(this.data.name))
+        goods: this.data.allgoods.filter(word => word[this.data.orderBy].toLowerCase().includes(this.data.name.toLowerCase()))
       })
     } else {
-      console.log("3")
       this.setData({
         goods: this.data.allgoods.filter(word => word[this.data.orderBy] == this.data.name)
       })

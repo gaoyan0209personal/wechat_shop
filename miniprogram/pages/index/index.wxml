@@ -22,7 +22,7 @@
     <view class="goods-info">
       <view class="title ellipsis">
         <navigator
-          url="/pages/goods-details/index?id={{item._id}}&color={{item.Color}}&emailtimeid={{item.EmailTimeID}}&emailtitle={{item.EmailTitle}}&name={{item.Name}}&originalprice={{item.OriginalPrice}}&price={{item.Price}}&quantity={{item.Quantity}}&stylenumber={{item.StyleNumber}}&tax={{item.Tax}}&upc={{item.UPC}}">
+          url="/pages/goods-details/index?id={{item._id}}&color={{item.Color}}&emailtimeid={{item.EmailTimeID}}&emailtitle={{item.EmailTitle}}&name={{item.Name}}&originalprice={{item.OriginalPrice}}&price={{item.Price}}&quantity={{item.Quantity}}&stylenumber={{item.StyleNumber}}&tax={{item.Tax}}&upc={{item.UPC}}&sellprice={{item.sellprice}}&buyer={{item.buyer}}&tracknumber={{item.tracknumber}}">
           {{item.Name}}</navigator>
       </view>
       <view class="buy-info">
@@ -32,7 +32,7 @@
       <view class="buy-info">
         <view class="num">数量{{item.Quantity}}件 {{item.StyleNumber}}</view>
         <view class="num">{{item.UPC}}</view>
-        <navigator url="/pages/order/index?id={{item._id}}&color={{item.Color}}&emailtimeid={{item.EmailTimeID}}&emailtitle={{item.EmailTitle}}&name={{item.Name}}&originalprice={{item.OriginalPrice}}&price={{item.Price}}&quantity={{item.Quantity}}&stylenumber={{item.StyleNumber}}&tax={{item.Tax}}&upc={{item.UPC}}"><image class="car" mode="aspectFill" src="/images/nav/order-on.png"></image></navigator>
+        <navigator url="/pages/order/index?id={{item._id}}&color={{item.Color}}&emailtimeid={{item.EmailTimeID}}&emailtitle={{item.EmailTitle}}&name={{item.Name}}&originalprice={{item.OriginalPrice}}&price={{item.Price}}&quantity={{item.Quantity}}&stylenumber={{item.StyleNumber}}&tax={{item.Tax}}&upc={{item.UPC}}&sellprice={{item.sellprice}}&buyer={{item.buyer}}&tracknumber={{item.tracknumber}}"><image class="car" mode="aspectFill" src="/images/nav/order-on.png"></image></navigator>
         <!-- <image class="car" src="/images/icon/car.svg" data-id="{{item._id}}" bindtap="addShopCar"></image> -->
       </view>
     </view>

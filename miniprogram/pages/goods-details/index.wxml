@@ -12,7 +12,7 @@
     <view class="goods-info-fx">
       <view class='item'>
         <navigator
-          url="/pages/order/index?id={{id}}&color={{color}}&emailtimeid={{emailtimeid}}&emailtitle={{emailtitle}}&name={{name}}&originalprice={{originalprice}}&price={{price}}&quantity={{quantity}}&stylenumber={{stylenumber}}&tax={{tax}}&upc={{upc}}">
+          url="/pages/order/index?id={{id}}&color={{color}}&emailtimeid={{emailtimeid}}&emailtitle={{emailtitle}}&name={{name}}&originalprice={{originalprice}}&price={{price}}&quantity={{quantity}}&stylenumber={{stylenumber}}&aftertax={{aftertax}}&tax={{tax}}&upc={{upc}}&sellprice={{sellprice}}&buyer={{buyer}}&tracknumber={{tracknumber}}">
           <image class="car" mode="aspectFill" src="/images/nav/order-on.png"></image>
         </navigator>
       </view>
@@ -31,8 +31,8 @@
         <view class="weui-cell__ft">{{stylenumber}}</view>
       </view>
       <view class="weui-cell">
-        <view class="weui-cell__bd">税</view>
-        <view class="weui-cell__ft">{{price * tax/100}}</view>
+        <view class="weui-cell__bd">税后</view>
+        <view class="weui-cell__ft">$ {{aftertax}}</view>
       </view>
       <view class="weui-cell">
         <view class="weui-cell__bd">颜色</view>

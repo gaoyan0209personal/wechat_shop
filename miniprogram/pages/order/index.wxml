@@ -3,8 +3,8 @@
   <view class="goods-info">
     <view class="goods-title">{{name}}</view>
     <view class="goods-profile">
-      <view class="p"><text>$</text> {{price}} </view>
-      <view wx:if="{{originalprice && originalprice > 0}}" class="goods-price" style='color:#aaa;text-decoration:line-through;padding: 15rpx 0rpx 0rpx 15rpx;'><text>$</text> {{originalprice}}</view>
+      <view class="p"><text>$</text> {{sellprice}} </view>
+      <view wx:if="{{originalprice && originalprice > 0}}" class="goods-price" style='color:#aaa;text-decoration:line-through;padding: 15rpx 0rpx 0rpx 15rpx;'><text>$</text> {{originalaftertax}} </view>
       <view class="r">数量 {{quantity}} 件</view>
     </view>
     <view class="goods-info-fx">
@@ -30,21 +30,28 @@
         <view class="weui-cell__ft">{{stylenumber}}</view>
       </view>
       <view class="weui-cell">
-        <view class="weui-cell__bd">税</view>
-        <view class="weui-cell__ft">{{price * tax/100}}</view>
-      </view>
-      <view class="weui-cell">
         <view class="weui-cell__bd">颜色</view>
         <view class="weui-cell__ft">{{color}}</view>
       </view>
+      <mp-form id="form" rules="{{rules}}" models="{{formData}}">
+      <view class="weui-cell">
+        <view class="weui-cell__bd">售价</view>
+        <view class="weui-cell__ft">
+          <input class="weui_input" bindchange="bindaftertaxpriceChange" name="name" type="text" placeholder="{{sellprice}}" />
+        </view>
+      </view>
       <view class="weui-cell">
         <view class="weui-cell__bd">买家</view>
-        <view class="weui-cell__ft"></view>
+        <view class="weui-cell__ft"><input class="weui_input" bindchange="bindbuyerChange" name="name" type="text" placeholder="{{buyer}}" /></view>
       </view>
       <view class="weui-cell">
         <view class="weui-cell__bd">包裹追踪</view>
-        <view class="weui-cell__ft"></view>
+        <view class="weui-cell__ft"><input class="weui_input" bindchange="bindtracknumberChange" name="name" type="text" placeholder="{{tracknumber}}" /></view>
       </view>
-    </view>
+    </mp-form>
+      </view>
+      <view class="weui-btn-area">
+            <button class="weui-btn" type="primary" bindtap="submitForm">确定</button>
+      </view>
   </view>
 </view>

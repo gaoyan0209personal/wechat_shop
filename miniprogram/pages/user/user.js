@@ -138,6 +138,9 @@ Page({
       item['Tax'] = tax;
       item['EmailTimeID'] = emailTimeId;
       item['EmailTitle'] = title;
+      item['buyer'] = null;
+      item['tracknumber'] = null;
+      item['sellprice'] = null;
       db.collection('inventory').add({
         data: item,
         success: res => {

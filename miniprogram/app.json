@@ -4,12 +4,7 @@
     "pages/index/index",
     "pages/goods-details/index",
     "pages/order/index",
-    "pages/orders/orders",
-    "pages/user/user",
-    
-    "pages/additem/additem",
-    "pages/addcategory/addcategory",
-    "pages/addorder/addorder"
+    "pages/user/user"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -26,12 +21,6 @@
         "selectedIconPath": "/images/home-selected.png"
       },
       {
-        "pagePath": "pages/orders/orders",
-        "text": "订单",
-        "iconPath": "/images/category.png",
-        "selectedIconPath": "/images/category-selected.png"
-      },
-      {
         "pagePath": "pages/user/user",
         "text": "用户",
         "iconPath": "/images/user.png",
@@ -39,7 +28,6 @@
       }
     ]
   },
-  
   "style": "v2",
   "sitemapLocation": "sitemap.json"
 }
