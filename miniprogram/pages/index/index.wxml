@@ -18,7 +18,6 @@
 <van-empty wx:if="{{ !goods || goods.length == 0 }}" description="暂无商品" />
 <block wx:if="{{listType == 1}}">
   <view class="list1" wx:for="{{goods}}" wx:key="_id">
-    <!-- <navigator url="/pages/goods-details/index?id={{item.id}}"><image class="img" mode="aspectFill" src="{{item.pic}}"></image></navigator> -->
     <view class="goods-info">
       <view class="title ellipsis">
         <navigator
@@ -32,8 +31,8 @@
       <view class="buy-info">
         <view class="num">数量{{item.Quantity}}件 {{item.StyleNumber}}</view>
         <view class="num">{{item.UPC}}</view>
+        <view class="num">{{item.buyer}}</view>
         <navigator url="/pages/order/index?id={{item._id}}&color={{item.Color}}&emailtimeid={{item.EmailTimeID}}&emailtitle={{item.EmailTitle}}&name={{item.Name}}&originalprice={{item.OriginalPrice}}&price={{item.Price}}&quantity={{item.Quantity}}&stylenumber={{item.StyleNumber}}&tax={{item.Tax}}&upc={{item.UPC}}&sellprice={{item.sellprice}}&buyer={{item.buyer}}&tracknumber={{item.tracknumber}}"><image class="car" mode="aspectFill" src="/images/nav/order-on.png"></image></navigator>
-        <!-- <image class="car" src="/images/icon/car.svg" data-id="{{item._id}}" bindtap="addShopCar"></image> -->
       </view>
     </view>
   </view>
@@ -55,26 +54,3 @@
     </view>
   </view>
 </view>
-
-<block wx:if="{{skuCurGoods}}">
-  <view class="sku-mask"></view>
-  <view class="sku-container">
-    <image class="close" src="/images/icon/close.svg" bindtap="closeSku"></image>
-    <view class="sku" wx:for="{{skuCurGoods.properties}}" wx:key="id">
-      <view class="t">{{item.name}}</view>
-      <view class="items">
-        <text class="{{small.active? 'active' : ''}}" wx:for="{{item.childsCurGoods}}" wx:for-item="small" wx:key="id"
-          data-pid="{{small.propertyId}}" data-id="{{small.id}}" bindtap="skuSelect">{{small.name}}</text>
-      </view>
-    </view>
-    <view class="num">
-      <view class="t">购买数量</view>
-      <view class="num-box">
-        <text class="a" bindtap="storesJian">-</text>
-        <text class="b">{{skuCurGoods.basicInfo.storesBuy}}</text>
-        <text class="a" bindtap="storesJia">+</text>
-      </view>
-    </view>
-  </view>
-  <view class="sku-btn" bindtap="addCarSku">加入购物车</view>
-</block>

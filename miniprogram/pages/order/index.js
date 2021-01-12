@@ -6,25 +6,21 @@ const db = wx.cloud.database()
 Page({
   data: {
     wxlogin: true,
-    updated_sellprice:null,
-    updated_buyer:null,
-    updated_tracknumber:null
+    updated_sellprice: null,
+    updated_buyer: null,
+    updated_tracknumber: null
   },
 
   submitForm(e) {
-    // db.collection('inventory').doc(this.data.id).update({
-    //   data: {
-    //     sellprice:this.data.sellprice,
-    //     buyer: this.data.buyer,
-    //     tracknumber: this.data.tracknumber,
-    //   }
-    // }).then(res => console.log(res)).catch(console.error)
-
-    this.setData({
-      updated_sellprice: this.data.sellprice,
-      updated_buyer: this.data.buyer,
-      updated_tracknumber: this.data.tracknumber,
-    })
+    db.collection('inventory').doc(this.data.id).update({
+      data: {
+        sellprice: this.data.sellprice,
+        buyer: this.data.buyer,
+        tracknumber: this.data.tracknumber,
+      }
+    }).then(res => wx.reLaunch({
+      url: "/pages/index/index"
+    })).catch(wx.showToast("Error"))
   },
 
   bindaftertaxpriceChange: function (e) {
@@ -72,6 +68,6 @@ Page({
 
 
   onShow() {
-    
+
   },
 })

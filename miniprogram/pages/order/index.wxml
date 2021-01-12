@@ -51,7 +51,7 @@
     </mp-form>
       </view>
       <view class="weui-btn-area">
-            <button class="weui-btn" type="primary" bindtap="submitForm">确定</button>
+            <button class="weui-btn" type="primary" bindtap="submitForm">更新</button>
       </view>
   </view>
 </view>
