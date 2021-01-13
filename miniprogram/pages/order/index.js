@@ -6,9 +6,6 @@ const db = wx.cloud.database()
 Page({
   data: {
     wxlogin: true,
-    updated_sellprice: null,
-    updated_buyer: null,
-    updated_tracknumber: null
   },
 
   submitForm(e) {

@@ -138,7 +138,7 @@ Page({
       item['Tax'] = tax;
       item['EmailTimeID'] = emailTimeId;
       item['EmailTitle'] = title;
-      item['buyer'] = null;
+      item['buyer'] = '';
       item['tracknumber'] = null;
       item['sellprice'] = null;
       db.collection('inventory').add({

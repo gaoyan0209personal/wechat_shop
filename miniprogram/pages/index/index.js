@@ -19,9 +19,11 @@ Page({
       title: '加载中',
     })
     if (!this.data.orderBy) {
-      this.setData({
-        goods: this.data.allgoods
-      })
+      if (this.data.allgoods.length !== this.data.goods.length) {
+        this.setData({
+          goods: this.data.allgoods
+        })
+      }
     } else if (this.data.orderBy == "Name" && this.data.name) {
       this.setData({
         goods: this.data.allgoods.filter(word => word[this.data.orderBy].toLowerCase().includes(this.data.name.toLowerCase()))
@@ -134,6 +136,34 @@ Page({
    */
   onReachBottom: function () {
 
+    wx.showLoading({
+        title: '刷新中！',
+        duration: 1000
+      }),
+      db.collection('inventory').where({
+        _openid: app.globalData.openid
+      }).skip(this.data.allgoods.length)
+      // 限制返回数量为 20 条
+      .orderBy('EmailTimeID', 'desc')
+      .get()
+      .then(res => {
+        if (res.data.length > 0) {
+          let newdata = this.data.allgoods.concat(res.data);
+          this.data.allgoods = newdata;
+          this.setData({
+            goods: newdata
+          })
+          this.search()
+        } else {
+          wx.showToast({
+            title: '已到底部',
+            duration: 1000
+          })
+        }
+      })
+      .catch(err => {
+        console.error(err)
+      })
   },
 
   /**
