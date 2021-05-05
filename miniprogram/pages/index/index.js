@@ -30,7 +30,7 @@ Page({
       })
     } else {
       this.setData({
-        goods: this.data.allgoods.filter(word => word[this.data.orderBy] == this.data.name)
+        goods: this.data.allgoods.filter(word => word[this.data.orderBy].toLowerCase().includes(this.data.name.toLowerCase()))
       })
     }
     wx.hideLoading()
@@ -81,6 +81,44 @@ Page({
         listType: 1
       })
     }
+  },
+
+  onChange: function(event){
+    const id_number = event.currentTarget.dataset['index']
+    const quantity = event.detail
+    db.collection('inventory').doc(id_number).update({
+      data: {
+        // 表示指示数据库将字段自增 
+        Quantity:quantity
+      },
+      success: function(res) {
+        console.log(res.data)
+      },
+      fail: function(res){
+        console.log("failed")
+      }
+    })
+    this.getGoodsList();
+    wx.stopPullDownRefresh();
+  },
+
+  bindaftertaxpriceChange: function(event) {
+    const item_id = event.currentTarget.dataset['index']
+    const description = event.detail['value']
+    db.collection('inventory').doc(item_id).update({
+      data: {
+        // 表示指示数据库将字段自增 
+        description:description
+      },
+      success: function(res) {
+        console.log(res.data)
+      },
+      fail: function(res){
+        console.log("failed")
+      }
+    })
+    this.getGoodsList();
+    wx.stopPullDownRefresh();
   },
 
   /**

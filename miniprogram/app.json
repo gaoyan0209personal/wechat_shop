@@ -4,7 +4,9 @@
     "pages/index/index",
     "pages/goods-details/index",
     "pages/order/index",
-    "pages/user/user"
+    "pages/user/user",
+    "pages/select-email-address/index",
+    "pages/email-address-add/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -29,5 +31,12 @@
     ]
   },
   "style": "v2",
-  "sitemapLocation": "sitemap.json"
+  "sitemapLocation": "sitemap.json",
+  "usingComponents": {
+    "van-button": "@vant/weapp/button/index",
+    "van-cell": "@vant/weapp/cell/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-dialog": "@vant/weapp/dialog/index",
+    "van-stepper": "@vant/weapp/stepper/index"
+  }
 }

@@ -2,32 +2,45 @@ const db = wx.cloud.database()
 const app = getApp()
 const regexpEachItem = /(?<Name>.+)\s+\$(?<Price>.+)T\s+(?<UPC>\d+)\s+(?<StyleNumber>\w+)\s+(?<Color>\w+)\s+(?<Quantity>\d+)\s@\s\$(?<OriginalPrice>.+)/g;
 const regexpTax = /SALES\sTAX\s-\s(?<Tax>.+)%/
+import bindViewTap from '../login/login'
 // pages/user/user.js
 Page({
   /**
    * Page initial data
    */
   data: {
-    balance: 0.00,
-    freeze: 0,
-    score: 0,
-    growth: 0,
-    score_sign_continuous: 0,
-    rechargeOpen: false, // 是否开启充值[预存]功能
+    array: ['三天', '一周', '一个月', '三个月'],
     checkSta: 1,
-
+    received_email: null, // the draft emails from cloud function receive.
+    account: null, // email login info, e.g. {name: "yan", addr: "yangao0209@qq.com", pass: "quapeernkkqahgdf", server: "qq.com", imap: Array(2), …}, this is saved in app as well
     // 用户订单统计数据
     count_id_no_confirm: 0,
     count_id_no_pay: 0,
     count_id_no_reputation: 0,
     count_id_no_transfer: 0,
-
-    received_email: null, // the draft emails from cloud function receive.
-    account: null, // email login info, e.g. {name: "yan", addr: "yangao0209@qq.com", pass: "quapeernkkqahgdf", server: "qq.com", imap: Array(2), …}, this is saved in app as well
+    userInfo: app.globalData.userInfo,
+    // 
+    show: true,
   },
 
-  onGotUserInfo: function (event) {
-    console.log(event)
+  onPickerChange: function (e) {
+    var fieldName = e.currentTarget.dataset.name
+    var data = {}
+    data[fieldName] = e.detail.value
+    this.setData(data)
+  },
+  
+  getUserInfo(event) {
+    console.log(event.detail);
+  },
+
+  onClose() {
+    this.setData({ show: false });
+  },
+  goLogin: function (event) {
+    wx.navigateTo({
+      url: '/pages/login/login' //跳转
+    })
   },
 
   loademail: async function (options, load_number) {
@@ -141,6 +154,7 @@ Page({
       item['buyer'] = '';
       item['tracknumber'] = null;
       item['sellprice'] = null;
+      item['description'] = null;
       db.collection('inventory').add({
         data: item,
         success: res => {
@@ -166,6 +180,7 @@ Page({
    * Lifecycle function--Called when page load
    */
   onLoad: function (options) {
+    console.log("user,onload")
     this.setData({
       userInfo: app.globalData.userInfo,
       openid: app.globalData.openid,
@@ -186,9 +201,12 @@ Page({
    * Lifecycle function--Called when page show
    */
   onShow: function () {
-    // this.setData({
-    //   userInfo: app.globalData.userInfo,
-    // });
+    if (!this.data.userInfo || !this.data.openid) {
+      this.setData({
+        userInfo: app.globalData.userInfo,
+        openid: app.globalData.openid,
+      })
+    }
   },
 
   /**

@@ -148,11 +148,9 @@
   width: 70rpx;
 }
 
-
-
 .header-box {
   padding: 32rpx;
-  display: flex;
+  display: inline-block;
   align-items: center;
 }
 .header-box .avatar {
