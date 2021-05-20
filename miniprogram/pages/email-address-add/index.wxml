@@ -2,7 +2,7 @@
   <view class="page__bd">
     <form bindsubmit="bindSave">
     <view class="weui-cells weui-cells_after-title">      
-      <view wx:if="{{!id && provinces}}" class="weui-cell weui-cell_select" bindtap="readFromWx">
+      <!-- <view wx:if="{{!id && provinces}}" class="weui-cell weui-cell_select" bindtap="readFromWx">
         <view class="weui-cell__bd">
           <view class="weui-select weui-select_in-select-after read-wx">
             获取微信收货地址
@@ -104,8 +104,25 @@
               <view class="weui-input">{{array[single]}}</view>
             </picker>
           </view>
-      </view>
+      </view> -->
       
+      <view class="weui-cell">
+        <view class="weui-cell__hd">
+          <view class="weui-label">邮箱</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input name="linkemail" class="weui-input" type="text" placeholder="填写邮箱" value="{{addressData.linkemail}}" />
+        </view>
+      </view>
+
+      <view class="weui-cell">
+        <view class="weui-cell__hd">
+          <view class="weui-label">密码</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input name="linkpassword" class="weui-input" type="text" placeholder="填写密码" value="{{addressData.password}}" />
+        </view>
+      </view>
 
 
     </view>

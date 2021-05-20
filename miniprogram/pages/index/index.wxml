@@ -15,7 +15,7 @@
     <!-- <view class="item {{orderBy=='brand'?'active':''}}" data-val="brand" bindtap="filter">品牌</view> -->
   </view>
 </van-sticky>
-<van-empty wx:if="{{ !goods || goods.length == 0 }}" description="暂无商品" />
+<van-empty wx:if="{{ user_id == null}}" description="暂无商品" />
 <block wx:if="{{listType == 1}}">
   <view class="list1" wx:for="{{goods}}" wx:key="id">
     <view class="goods-info">
@@ -31,7 +31,7 @@
       </navigator>
       <view class="buy-info">
         <view class="num">数量{{item.Quantity}}件 {{item.StyleNumber}}</view>
-        <view class="num">{{item.UPC}}</view>
+        <view class="num">{{item.UPC}}</view>                                                               
         <view class="num">{{item.buyer}}</view>
         <navigator
           url="/pages/order/index?id={{item._id}}&color={{item.Color}}&emailtimeid={{item.EmailTimeID}}&emailtitle={{item.EmailTitle}}&name={{item.Name}}&originalprice={{item.OriginalPrice}}&price={{item.Price}}&quantity={{item.Quantity}}&stylenumber={{item.StyleNumber}}&tax={{item.Tax}}&upc={{item.UPC}}&sellprice={{item.sellprice}}&buyer={{item.buyer}}&tracknumber={{item.tracknumber}}">
@@ -42,7 +42,7 @@
     </view>
   </view>
 </block>
-<view wx:if="{{listType == 2}}" class="list2-box">
+<view wx:if="{{listType == 2 }}" class="list2-box">
   <view class="list2" wx:for="{{goods}}" wx:key="id">
     <navigator
       url="/pages/goods-details/index?id={{item._id}}&color={{item.Color}}&emailtimeid={{item.EmailTimeID}}&emailtitle={{item.EmailTitle}}&name={{item.Name}}&originalprice={{item.OriginalPrice}}&price={{item.Price}}&quantity={{item.Quantity}}&stylenumber={{item.StyleNumber}}&tax={{item.Tax}}&upc={{item.UPC}}&sellprice={{item.sellprice}}&buyer={{item.buyer}}&tracknumber={{item.tracknumber}}">

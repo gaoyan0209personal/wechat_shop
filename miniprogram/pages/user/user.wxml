@@ -11,17 +11,20 @@
   <van-button plain custom-class="btn" size="small" lang="zh_CN" bindtap="goLogin">立即登录</van-button>
 </view>
 <van-cell-group title="基本信息">
-  <van-cell title="绑定邮箱" is-link url="/pages/select-email-address/index" />
-
-  <van-cell wx:if="{{checkSta==1}}" title="加载邮件" center>
+  <van-cell wx:if="{{userInfo}}" title="绑定邮箱" is-link url="/pages/select-email-address/index" />
+  <van-field
+    wx:if="{{userInfo}}" 
+    value="{{ email_quantity }}"
+    label="加载邮件数量"
+    placeholder="请输入邮件数量"
+    bind:change="onChange"
+    input-align="right"
+  />
+  <van-cell wx:if="{{userInfo}}" title="加载邮件" center>
     <van-button type="primary" size="small" lang="zh_CN" bindtap="loademail">点击加载邮件</van-button>
   </van-cell>
-
 </van-cell-group>
 <van-cell-group title="系统设置">
-  <van-cell title="清除缓存" is-link bind:click="clearStorage" />
-  <van-cell wx:if="{{apiUserInfoMap}}" title="退出登录" is-link bind:click="loginOut" />
-  <van-cell wx:else title="立即登陆" is-link bind:click="goLogin" />
-  <van-cell wx:if="{{isAdmin}}" title="管理员入口" is-link bind:click="goadmin" />
-  <van-cell title="当前版本" value="{{version}}" />
+  <!-- <van-cell wx:if="{{isAdmin}}" title="管理员入口" is-link bind:click="goadmin" /> -->
+  <van-cell title="当前版本" value="1.0.0" />
 </van-cell-group>

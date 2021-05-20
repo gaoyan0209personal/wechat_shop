@@ -1,13 +1,16 @@
 // const WXAPI = require('apifm-wxapi')
+const db = wx.cloud.database()
+const app = getApp()
+
 Page({
   data: {
     array: ['三天', '一周', '一个月', '三个月'],
-    provinces: undefined,// 省份数据数组
-    pIndex: 0,//选择的省下标
-    cities: undefined,// 城市数据数组
-    cIndex: 0,//选择的市下标
-    areas: undefined,// 区县数数组
-    aIndex: 0,//选择的区下标
+    provinces: undefined, // 省份数据数组
+    pIndex: 0, //选择的省下标
+    cities: undefined, // 城市数据数组
+    cIndex: 0, //选择的市下标
+    areas: undefined, // 区县数数组
+    aIndex: 0, //选择的区下标
   },
   // async provinces(provinceId, cityId, districtId) {
   //   const res = await WXAPI.province()
@@ -108,99 +111,140 @@ Page({
     const index = e.detail.value
     this.setData({
       aIndex: index
-    })  
+    })
   },
   async bindSave(e) {
-    if (this.data.pIndex == 0 ) {
-      wx.showToast({
-        title: '请选择省份',
-        icon: 'none'
-      })
-      return
-    }
-    if (this.data.cIndex == 0 ) {
-      wx.showToast({
-        title: '请选择城市',
-        icon: 'none'
-      })
-      return
-    }
+    // if (this.data.pIndex == 0 ) {
+    //   wx.showToast({
+    //     title: '请选择省份',
+    //     icon: 'none'
+    //   })
+    //   return
+    // }
+    // if (this.data.cIndex == 0 ) {
+    //   wx.showToast({
+    //     title: '请选择城市',
+    //     icon: 'none'
+    //   })
+    //   return
+    // }
     const linkMan = e.detail.value.linkMan;
     const address = e.detail.value.address;
     const mobile = e.detail.value.mobile;
-    if (!this.data.addressData) {
-      wx.showToast({
-        title: '请选择定位',
-        icon: 'none',       
-      })
-      return
-    }
-    const latitude = this.data.addressData.latitude
-    const longitude = this.data.addressData.longitude
-    if (linkMan == ""){
-      wx.showToast({
-        title: '请填写联系人姓名',
-        icon: 'none'
-      })
-      return
-    }
-    if (mobile == ""){
-      wx.showToast({
-        title: '请填写手机号码',
-        icon: 'none'
-      })
-      return
-    }
-    if (!latitude){
-      wx.showToast({
-        title: '请选择定位',
-        icon: 'none',       
-      })
-      return
-    }
-    if (address == ""){
-      wx.showToast({
-        title: '请填写详细地址',
-        icon: 'none'
-      })
-      return
-    }    
+    // if (!this.data.addressData) {
+    //   wx.showToast({
+    //     title: '请选择定位',
+    //     icon: 'none',       
+    //   })
+    //   return
+    // }
+    // const latitude = this.data.addressData.latitude
+    // const longitude = this.data.addressData.longitude
+    // if (linkMan == ""){
+    //   wx.showToast({
+    //     title: '请填写联系人姓名',
+    //     icon: 'none'
+    //   })
+    //   return
+    // }
+    // if (mobile == ""){
+    //   wx.showToast({
+    //     title: '请填写手机号码',
+    //     icon: 'none'
+    //   })
+    //   return
+    // }
+    // if (!latitude){
+    //   wx.showToast({
+    //     title: '请选择定位',
+    //     icon: 'none',       
+    //   })
+    //   return
+    // }
+    // if (address == ""){
+    //   wx.showToast({
+    //     title: '请填写详细地址',
+    //     icon: 'none'
+    //   })
+    //   return
+    // }    
     const postData = {
       token: wx.getStorageSync('token'),
-      linkMan: linkMan,
-      address: address,
-      mobile: mobile,
+      // linkMan: linkMan,
+      // address: address,
+      // mobile: mobile,
       isDefault: 'true',
-      latitude,
-      longitude
+      // latitude,
+      // longitude
     }
-    if (this.data.pIndex > 0) {
-      postData.provinceId = this.data.provinces[this.data.pIndex].id
-    }
-    if (this.data.cIndex > 0) {
-      postData.cityId = this.data.cities[this.data.cIndex].id
-    }
-    if (this.data.aIndex > 0) {
-      postData.districtId = this.data.areas[this.data.aIndex].id
-    }    
-    let apiResult
-    if (this.data.id) {
-      postData.id = this.data.id
-      apiResult = await WXAPI.updateAddress(postData)
-    } else {
-      apiResult = await WXAPI.addAddress(postData)
-    }
-    if (apiResult.code != 0) {
-      // 登录错误 
-      wx.hideLoading();
-      wx.showToast({
-        title: apiResult.msg,
-        icon: 'none'
+    console.log('postData', postData)
+    // if (this.data.pIndex > 0) {
+    //   postData.provinceId = this.data.provinces[this.data.pIndex].id
+    // }
+    // if (this.data.cIndex > 0) {
+    //   postData.cityId = this.data.cities[this.data.cIndex].id
+    // }
+    // if (this.data.aIndex > 0) {
+    //   postData.districtId = this.data.areas[this.data.aIndex].id
+    // }   
+    // await db.collection('user').where({
+    //   _id: app.globalData.openid
+    // }).get().then(res => {
+    //   console.log(res)
+    // }).catch(e => {
+    //   wx.showToast({
+    //     title: "保存失败，请检查后台 user Collection",
+    //     icon: 'none'
+    //   })
+    //   console.log(e)
+    // })
+    console.log(e)
+    var email_address = e.detail.value["linkemail"]
+    var password = e.detail.value["linkpassword"]
+    const _ = db.command
+    var id_ = app.globalData.openid
+    await db.collection('user').doc(id_).update({
+        data: {
+          mails: _.push({
+            "addr": email_address,
+            "imap": ["imap.qq.com", "993"],
+            "name": email_address,
+            "pass": password,
+            "server": "qq.com",
+            "smtp": ["smtp.qq.com", "465"]
+          })
+        }
       })
-      return;
-    } else {
-      wx.navigateBack()
-    }
+      .then(res => {
+        console.log(res)
+        wx.navigateBack()
+      }).catch(e => {
+        wx.showToast({
+          title: "保存失败，请检查后台 user Collection",
+          icon: 'none'
+        })
+        console.log(e)
+      })
+
+    console.log(app.globalData.openid)
+    // let apiResult
+    // if (this.data.id) {
+    //   postData.id = this.data.id
+    //   apiResult = await WXAPI.updateAddress(postData)
+    // } else {
+    //   apiResult = await WXAPI.addAddress(postData)
+    // }
+    // if (apiResult.code != 0) {
+    //   // 登录错误 
+    //   wx.hideLoading();
+    //   wx.showToast({
+    //     title: apiResult.msg,
+    //     icon: 'none'
+    //   })
+    //   return;
+    // } else {
+    //   wx.navigateBack()
+    // }
   },
   async onLoad(e) {
     // if (e.id) { // 修改初始化数据库数据

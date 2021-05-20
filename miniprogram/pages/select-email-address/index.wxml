@@ -1,8 +1,15 @@
 <van-empty wx:if="{{ !addressList }}" description="暂无收货地址" />
 
-<view class="list" wx:for="{{addressList}}" wx:key="id">
-  <van-cell border="{{ false }}" title="{{item.linkMan}} {{item.mobile}}" label="{{item.address}}" bind:click="selectTap" data-id="{{item.id}}" />
-  <van-icon name="records" size="40rpx" bind:click="editAddess" data-id="{{item.id}}" />
+<view class="list" wx:for="{{emails}}" wx:key="index">
+  <van-swipe-cell right-width="{{ 65 }}" left-width="{{ 65 }}" data-idx="{{index}}"async-close bind:close="onClose">
+    <view slot="left">选择</view>
+    <van-cell-group>
+      <van-cell border="{{ false }}" title="{{item.name}} {{item.name}}" label="{{item.addr}}" bind:click="selectTap"
+        data-id="{{item.id}}" /><view hidden="{{index != active_email_index }}"> <text space="ensp">  (已选择)</text> </view>
+      <van-icon name="records" size="40rpx" bind:click="editAddess" data-id="{{item.id}}" />
+    </van-cell-group>
+    <view slot="right">删除</view>
+  </van-swipe-cell>
 </view>
 
 <view style="height:32rpx"></view>

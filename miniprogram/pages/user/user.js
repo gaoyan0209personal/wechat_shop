@@ -9,34 +9,13 @@ Page({
    * Page initial data
    */
   data: {
-    array: ['三天', '一周', '一个月', '三个月'],
-    checkSta: 1,
     received_email: null, // the draft emails from cloud function receive.
     account: null, // email login info, e.g. {name: "yan", addr: "yangao0209@qq.com", pass: "quapeernkkqahgdf", server: "qq.com", imap: Array(2), …}, this is saved in app as well
     // 用户订单统计数据
-    count_id_no_confirm: 0,
-    count_id_no_pay: 0,
-    count_id_no_reputation: 0,
-    count_id_no_transfer: 0,
     userInfo: app.globalData.userInfo,
-    // 
-    show: true,
+    email_quantity:10
   },
 
-  onPickerChange: function (e) {
-    var fieldName = e.currentTarget.dataset.name
-    var data = {}
-    data[fieldName] = e.detail.value
-    this.setData(data)
-  },
-  
-  getUserInfo(event) {
-    console.log(event.detail);
-  },
-
-  onClose() {
-    this.setData({ show: false });
-  },
   goLogin: function (event) {
     wx.navigateTo({
       url: '/pages/login/login' //跳转
@@ -51,39 +30,31 @@ Page({
         })
       },
     })
-    if (!app.globalData.openid) {
-      // this.load_openid();
-    }
-    var len = 0;
+    wx.showLoading({title: '加载邮件中...'})
     const oa = options.account;
-    console.log("0", oa);
     var self = this;
     await wx.cloud.callFunction({
       name: 'account'
     }).then(({
       result
     }) => {
+      result = [result]
       let now = result[0] // result has all emails.
-      console.log("0", now)
       if (oa) {
         now = result.find(v => v.addr = oa)
       }
-      console.log("0", now)
       self.setData({
         account: result,
         now
       })
       app.globalData.account = result
     })
-    console.log("1", "this.data", self.data);
-    console.log("1", app.globalData.account);
     //当前账户
     const account = self.data.now
-    console.log("2", account, typeof account);
     await wx.cloud.callFunction({
       name: 'receive',
       data: {
-        num: 10, // TODO: user should give the number of email to fetch
+        num: this.data.email_quantity, 
         account
       }
     }).then(res => {
@@ -116,6 +87,10 @@ Page({
             }
           }
         }).catch(console.error)
+        wx.showLoading({
+          title: '加载邮件中',
+          
+        })
       wx.hideLoading();
     })
   },
@@ -173,14 +148,12 @@ Page({
         }
       })
     }
-    // return matches;
   },
 
   /**
    * Lifecycle function--Called when page load
    */
   onLoad: function (options) {
-    console.log("user,onload")
     this.setData({
       userInfo: app.globalData.userInfo,
       openid: app.globalData.openid,
@@ -244,24 +217,11 @@ Page({
 
   },
 
-  toBind(e) {
-    console.log('form发生了submit事件，携带数据为：', e.detail.value)
-    db.collection("user").where({
-      _openid: this.data.openid
-    }).get().then(res => {
-      if (res.data.length == 0) {
-        // db.collection("user").add(
+  onChange:function(event){
+    // console.log(event.detail)
+    this.setData({
+      email_quantity: event.detail,
+    })
+  }
 
-
-
-        // )
-      } else {
-
-      }
-    }).catch(
-      console.error
-    )
-
-
-  },
 })

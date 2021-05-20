@@ -11,6 +11,7 @@ Page({
     orderBy: '', // 排序规则
     goods: null,
     allgoods: null,
+    user_id: null
   },
 
   async search(e) {
@@ -40,14 +41,16 @@ Page({
     wx.showLoading({
       title: '加载中',
     })
-    await db.collection('inventory').where({
-      _openid: app.globalData.openid,
-    }).orderBy('EmailTimeID', 'desc').get().then(res => { //TODO: need to consider case that has above 20 items.
-      this.setData({
-        goods: res.data,
-        allgoods: res.data,
+    if (app.globalData.openid !== null) {
+      await db.collection('inventory').where({
+        _openid: app.globalData.openid,
+      }).orderBy('EmailTimeID', 'desc').get().then(res => { //TODO: need to consider case that has above 20 items.
+        this.setData({
+          goods: res.data,
+          allgoods: res.data,
+        })
       })
-    })
+    }
     wx.hideLoading()
   },
 
@@ -83,18 +86,18 @@ Page({
     }
   },
 
-  onChange: function(event){
+  onChange: function (event) {
     const id_number = event.currentTarget.dataset['index']
     const quantity = event.detail
     db.collection('inventory').doc(id_number).update({
       data: {
         // 表示指示数据库将字段自增 
-        Quantity:quantity
+        Quantity: quantity
       },
-      success: function(res) {
+      success: function (res) {
         console.log(res.data)
       },
-      fail: function(res){
+      fail: function (res) {
         console.log("failed")
       }
     })
@@ -102,18 +105,18 @@ Page({
     wx.stopPullDownRefresh();
   },
 
-  bindaftertaxpriceChange: function(event) {
+  bindaftertaxpriceChange: function (event) {
     const item_id = event.currentTarget.dataset['index']
     const description = event.detail['value']
     db.collection('inventory').doc(item_id).update({
       data: {
         // 表示指示数据库将字段自增 
-        description:description
+        description: description
       },
-      success: function(res) {
+      success: function (res) {
         console.log(res.data)
       },
-      fail: function(res){
+      fail: function (res) {
         console.log("failed")
       }
     })
@@ -125,11 +128,14 @@ Page({
    * Lifecycle function--Called when page load
    */
   onLoad: function (options) {
+    console.log("options", app.globalData.openid)
     this.setData({
       name: options.name,
-      categoryId: options.categoryId
+      categoryId: options.categoryId,
+      user_id: options.openid
     })
     this.getGoodsList();
+    console.log("sadfasdf", app.globalData)
   },
 
   /**
@@ -142,7 +148,13 @@ Page({
   /**
    * Lifecycle function--Called when page show
    */
-  onShow: function () {},
+  onShow: function () {
+    this.setData({
+      user_id: app.globalData.openid
+      // user_id:3
+    })
+
+  },
 
   /**
    * Lifecycle function--Called when page hide

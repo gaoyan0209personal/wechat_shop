@@ -11,7 +11,7 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "订单小助手",
+    "navigationBarTitleText": "北美库存小助手",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
@@ -37,6 +37,8 @@
     "van-cell": "@vant/weapp/cell/index",
     "van-cell-group": "@vant/weapp/cell-group/index",
     "van-dialog": "@vant/weapp/dialog/index",
-    "van-stepper": "@vant/weapp/stepper/index"
+    "van-stepper": "@vant/weapp/stepper/index",
+    "van-swipe-cell":"@vant/weapp/swipe-cell/index",
+    "van-field": "@vant/weapp/field/index"
   }
 }
