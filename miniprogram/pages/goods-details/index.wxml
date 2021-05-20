@@ -1,0 +1,51 @@
+<!-- <import src="/template/login/index.wxml" /> -->
+<view class="container" wx:if="{{wxlogin}}">
+  <view class="goods-info">
+    <view class="goods-title">{{name}}</view>
+    <view class="goods-profile">
+      <view class="p"><text>$</text> {{price}} </view>
+      <view wx:if="{{originalprice && originalprice > 0}}" class="goods-price"
+        style='color:#aaa;text-decoration:line-through;padding: 15rpx 0rpx 0rpx 15rpx;'><text>$</text> {{originalprice}}
+      </view>
+      <view class="r">数量 {{quantity}} 件</view>
+    </view>
+    <view class="goods-info-fx">
+      <view class='item'>
+        <navigator
+          url="/pages/order/index?id={{id}}&color={{color}}&emailtimeid={{emailtimeid}}&emailtitle={{emailtitle}}&name={{name}}&originalprice={{originalprice}}&price={{price}}&quantity={{quantity}}&stylenumber={{stylenumber}}&aftertax={{aftertax}}&tax={{tax}}&upc={{upc}}&sellprice={{sellprice}}&buyer={{buyer}}&tracknumber={{tracknumber}}">
+          <image class="car" mode="aspectFill" src="/images/nav/order-on.png"></image>
+        </navigator>
+      </view>
+    </view>
+  </view>
+
+  <view class="page__bd" style='width:750rpx;'>
+    <view class="weui-cells__title">商品详情</view>
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell">
+        <view class="weui-cell__bd">UPC</view>
+        <view class="weui-cell__ft">{{upc}}</view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">StyleNumber</view>
+        <view class="weui-cell__ft">{{stylenumber}}</view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">税后</view>
+        <view class="weui-cell__ft">$ {{aftertax}}</view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">颜色</view>
+        <view class="weui-cell__ft">{{color}}</view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">邮件时间</view>
+        <view class="weui-cell__ft">{{emailtimeid}}</view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">邮件</view>
+        <view class="weui-cell__ft">{{emailtitle}}</view>
+      </view>
+    </view>
+  </view>
+</view>

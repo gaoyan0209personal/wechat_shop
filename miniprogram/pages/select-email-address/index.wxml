@@ -1,0 +1,20 @@
+<van-empty wx:if="{{ !addressList }}" description="暂无收货地址" />
+
+<view class="list" wx:for="{{emails}}" wx:key="index">
+  <van-swipe-cell right-width="{{ 65 }}" left-width="{{ 65 }}" data-idx="{{index}}"async-close bind:close="onClose">
+    <view slot="left">选择</view>
+    <van-cell-group>
+      <van-cell border="{{ false }}" title="{{item.name}} {{item.name}}" label="{{item.addr}}" bind:click="selectTap"
+        data-id="{{item.id}}" /><view hidden="{{index != active_email_index }}"> <text space="ensp">  (已选择)</text> </view>
+      <van-icon name="records" size="40rpx" bind:click="editAddess" data-id="{{item.id}}" />
+    </van-cell-group>
+    <view slot="right">删除</view>
+  </van-swipe-cell>
+</view>
+
+<view style="height:32rpx"></view>
+<view class="safe-bottom-box">
+  <van-button type="primary" icon="add-o" block bind:click="addAddess">新增邮箱地址</van-button>
+</view>
+
+<van-dialog id="van-dialog-auth-login" bind:getuserinfo="processLogin" />

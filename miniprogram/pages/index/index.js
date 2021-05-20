@@ -1,92 +1,141 @@
 const db = wx.cloud.database()
 const app = getApp()
-const regexpNamePrice = new RegExp(/(?<Name>.+)\s+\$(?<Price>.+)T\s+(?<PTC>\d+)\s+/, 'g');
 
 Page({
-
   /**
    * Page initial data
    */
   data: {
-    classType: [],
-    productList: [],
-    productAll: [{
-        "id": 1,
-        "name": "华为Mate 30",
-        "price": 4099,
-        "src": "/images/mate30.jpg",
-        "classid": 1,
-      },
-      {
-        "id": 2,
-        "name": "华为Mate 20",
-        "price": 2099,
-        "src": "/images/mate20.jpg",
-        "classid": 1,
-      },
-      {
-        "id": 3,
-        "name": "爆款清仓",
-        "price": 99,
-        "src": "/images/airpods.jpg",
-        "classid": 2,
-      },
-      {
-        "id": 4,
-        "name": "华为Mate 20",
-        "price": 2099,
-        "src": "/images/mate20.jpg",
-        "classid": 1,
-      },
-      {
-        "id": 5,
-        "name": "华为Mate 20",
-        "price": 2099,
-        "src": "/images/mate20.jpg",
-        "classid": 1,
-      },
-      {
-        "id": 6,
-        "name": "华为Mate 20",
-        "price": 2099,
-        "src": "/images/mate20.jpg",
-        "classid": 1,
-      }
-    ]
+    listType: 1, // 1为1个商品一行，2为2个商品一行    
+    name: '', // 搜索关键词 
+    orderBy: '', // 排序规则
+    goods: null,
+    allgoods: null,
+    user_id: null
   },
 
-  addcategory(e) {
-    wx.navigateTo({
-      url: '/pages/addcategory/addcategory',
+  async search(e) {
+    // 搜索商品
+    wx.showLoading({
+      title: '加载中',
     })
-  },
-
-  additem(e) {
-    wx.navigateTo({
-      url: '/pages/additem/additem',
-    })
-  },
-
-  searchTab(e) {
-    var p = this.data.productAll;
-    var id = e.currentTarget.id;
-    console.log(e);
-    var list = [];
-    for (var i = 0; i < p.length; i++) {
-      if (p[i].classid == id) {
-        list.push(p[i])
+    if (!this.data.orderBy) {
+      if (this.data.allgoods.length !== this.data.goods.length) {
+        this.setData({
+          goods: this.data.allgoods
+        })
       }
+    } else if (this.data.orderBy == "Name" && this.data.name) {
+      this.setData({
+        goods: this.data.allgoods.filter(word => word[this.data.orderBy].toLowerCase().includes(this.data.name.toLowerCase()))
+      })
+    } else {
+      this.setData({
+        goods: this.data.allgoods.filter(word => word[this.data.orderBy].toLowerCase().includes(this.data.name.toLowerCase()))
+      })
     }
-    this.setData({
-      productList: list
+    wx.hideLoading()
+  },
+
+  async getGoodsList() {
+    wx.showLoading({
+      title: '加载中',
     })
+    if (app.globalData.openid !== null) {
+      await db.collection('inventory').where({
+        _openid: app.globalData.openid,
+      }).orderBy('EmailTimeID', 'desc').get().then(res => { //TODO: need to consider case that has above 20 items.
+        this.setData({
+          goods: res.data,
+          allgoods: res.data,
+        })
+      })
+    }
+    wx.hideLoading()
+  },
+
+  filter(e) {
+    this.setData({
+      orderBy: e.currentTarget.dataset.val
+    })
+    this.search()
+  },
+
+  bindinput(e) {
+    this.setData({
+      name: e.detail.value
+    })
+  },
+
+  bindconfirm(e) {
+    this.setData({
+      name: e.detail.value
+    })
+    this.search()
+  },
+
+  changeShowType() {
+    if (this.data.listType == 1) {
+      this.setData({
+        listType: 2
+      })
+    } else {
+      this.setData({
+        listType: 1
+      })
+    }
+  },
+
+  onChange: function (event) {
+    const id_number = event.currentTarget.dataset['index']
+    const quantity = event.detail
+    db.collection('inventory').doc(id_number).update({
+      data: {
+        // 表示指示数据库将字段自增 
+        Quantity: quantity
+      },
+      success: function (res) {
+        console.log(res.data)
+      },
+      fail: function (res) {
+        console.log("failed")
+      }
+    })
+    this.getGoodsList();
+    wx.stopPullDownRefresh();
+  },
+
+  bindaftertaxpriceChange: function (event) {
+    const item_id = event.currentTarget.dataset['index']
+    const description = event.detail['value']
+    db.collection('inventory').doc(item_id).update({
+      data: {
+        // 表示指示数据库将字段自增 
+        description: description
+      },
+      success: function (res) {
+        console.log(res.data)
+      },
+      fail: function (res) {
+        console.log("failed")
+      }
+    })
+    this.getGoodsList();
+    wx.stopPullDownRefresh();
   },
 
   /**
    * Lifecycle function--Called when page load
    */
   onLoad: function (options) {
-    
+    console.log("options", app.globalData.openid)
+    this.setData({
+      name: options.name,
+      categoryId: options.categoryId,
+      user_id: options.openid
+    })
+    this.getGoodsList();
+    console.log("sadfasdf", app.globalData)
   },
 
   /**
@@ -100,19 +149,11 @@ Page({
    * Lifecycle function--Called when page show
    */
   onShow: function () {
-    console.log("index page onshow run successfully ")
-    let that = this
-    db.collection("categories").get({
-      success(res) {
-        that.setData({
-          classType: res.data
-        })
-      },
-      fail(res) {
-        console.log("请求失败", res)
-      }
-
+    this.setData({
+      user_id: app.globalData.openid
+      // user_id:3
     })
+
   },
 
   /**
@@ -133,7 +174,11 @@ Page({
    * Page event handler function--Called when user drop down
    */
   onPullDownRefresh: function () {
-
+    this.setData({
+      orderBy: ""
+    })
+    this.getGoodsList();
+    wx.stopPullDownRefresh();
   },
 
   /**
@@ -141,6 +186,34 @@ Page({
    */
   onReachBottom: function () {
 
+    wx.showLoading({
+        title: '刷新中！',
+        duration: 1000
+      }),
+      db.collection('inventory').where({
+        _openid: app.globalData.openid
+      }).skip(this.data.allgoods.length)
+      // 限制返回数量为 20 条
+      .orderBy('EmailTimeID', 'desc')
+      .get()
+      .then(res => {
+        if (res.data.length > 0) {
+          let newdata = this.data.allgoods.concat(res.data);
+          this.data.allgoods = newdata;
+          this.setData({
+            goods: newdata
+          })
+          this.search()
+        } else {
+          wx.showToast({
+            title: '已到底部',
+            duration: 1000
+          })
+        }
+      })
+      .catch(err => {
+        console.error(err)
+      })
   },
 
   /**

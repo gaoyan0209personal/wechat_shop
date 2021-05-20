@@ -4,18 +4,20 @@ const app = getApp()
 
 Page({
   data: {
-    motto: 'Hello World',
+    motto: '订单小助手',
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
   //事件处理函数
   bindViewTap: function() {
-    wx.navigateTo({
-      url: '../orders/orders'
+    this.load_openid();
+    wx.switchTab({
+      url: '../index/index'
     })
   },
   onLoad: function () {
+    console.log(this.data)
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
@@ -50,5 +52,30 @@ Page({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
     })
+  },
+
+  load_openid: function (options) {
+    wx.cloud.callFunction({
+      name: 'login',
+      data: {},
+      success: res => {
+        console.log('[云函数] [login] user openid: ', res.result.openid)
+        app.globalData.openid = res.result.openid
+        wx.showToast({
+          title: '用户登录成功',
+        })
+      },
+      fail: err => {
+        console.error('[云函数] [login] 调用失败', err)
+        wx.showToast({
+          title: '用户登录失败',
+        })
+      }
+    })
+    return 3 
   }
+
+
+
+
 })

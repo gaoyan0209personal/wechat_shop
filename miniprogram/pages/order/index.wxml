@@ -1,0 +1,57 @@
+<!-- <import src="/template/login/index.wxml" /> -->
+<view class="container" wx:if="{{wxlogin}}">
+  <view class="goods-info">
+    <view class="goods-title">{{name}}</view>
+    <view class="goods-profile">
+      <view class="p"><text>$</text> {{sellprice}} </view>
+      <view wx:if="{{originalprice && originalprice > 0}}" class="goods-price" style='color:#aaa;text-decoration:line-through;padding: 15rpx 0rpx 0rpx 15rpx;'><text>$</text> {{originalaftertax}} </view>
+      <view class="r">数量 {{quantity}} 件</view>
+    </view>
+    <view class="goods-info-fx">
+      <view class='item'>
+        <image src='/images/share/share1.png'></image>
+        <button open-type='share'></button>
+      </view>
+      <view class='item' bindtap="drawSharePic">
+        <image src='/images/share/share2.png'></image>
+      </view>
+    </view>
+  </view>
+
+  <view class="page__bd" style='width:750rpx;'>
+    <view class="weui-cells__title">商品详情</view>
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell">
+        <view class="weui-cell__bd">UPC</view>
+        <view class="weui-cell__ft">{{upc}}</view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">StyleNumber</view>
+        <view class="weui-cell__ft">{{stylenumber}}</view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">颜色</view>
+        <view class="weui-cell__ft">{{color}}</view>
+      </view>
+      <mp-form id="form" rules="{{rules}}" models="{{formData}}">
+      <view class="weui-cell">
+        <view class="weui-cell__bd">售价</view>
+        <view class="weui-cell__ft">
+          <input class="weui_input" bindchange="bindaftertaxpriceChange" name="name" type="text" placeholder="{{sellprice}}" />
+        </view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">买家</view>
+        <view class="weui-cell__ft"><input class="weui_input" bindchange="bindbuyerChange" name="name" type="text" placeholder="{{buyer}}" /></view>
+      </view>
+      <view class="weui-cell">
+        <view class="weui-cell__bd">包裹追踪</view>
+        <view class="weui-cell__ft"><input class="weui_input" bindchange="bindtracknumberChange" name="name" type="text" placeholder="{{tracknumber}}" /></view>
+      </view>
+    </mp-form>
+      </view>
+      <view class="weui-btn-area">
+            <button class="weui-btn" type="primary" bindtap="submitForm">更新</button>
+      </view>
+  </view>
+</view>

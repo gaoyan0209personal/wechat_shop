@@ -1,30 +1,74 @@
 <!--index.wxml-->
+<van-sticky>
+  <view class="header">
+    <view class="search">
+      <input type="text" placeholder="输入搜索关键词" value="{{name}}" bindinput="bindinput" bindconfirm="bindconfirm"></input>
+      <image src="/images/icon/search.svg" bindtap="search"></image>
+    </view>
+    <image class="show-type" src="/images/icon/list{{listType}}.svg" bindtap="changeShowType"></image>
+  </view>
+  <view class="filters">
+    <view class="item {{orderBy==''?'active':''}}" data-val="" bindtap="filter">全部</view>
+    <view class="item {{orderBy=='Name'?'active':''}}" data-val="Name" bindtap="filter">名字</view>
+    <view class="item {{orderBy=='UPC'?'active':''}}" data-val="UPC" bindtap="filter">UPC</view>
+    <view class="item {{orderBy=='StyleNumber'?'active':''}}" data-val="StyleNumber" bindtap="filter">StyleNumber</view>
+    <!-- <view class="item {{orderBy=='brand'?'active':''}}" data-val="brand" bindtap="filter">品牌</view> -->
+  </view>
+</van-sticky>
+<van-empty wx:if="{{ user_id == null}}" description="暂无商品" />
+<block wx:if="{{listType == 1}}">
+  <view class="list1" wx:for="{{goods}}" wx:key="id">
+    <view class="goods-info">
+      <navigator
+        url="/pages/goods-details/index?id={{item._id}}&color={{item.Color}}&emailtimeid={{item.EmailTimeID}}&emailtitle={{item.EmailTitle}}&name={{item.Name}}&originalprice={{item.OriginalPrice}}&price={{item.Price}}&quantity={{item.Quantity}}&stylenumber={{item.StyleNumber}}&tax={{item.Tax}}&upc={{item.UPC}}&sellprice={{item.sellprice}}&buyer={{item.buyer}}&tracknumber={{item.tracknumber}}">
+        <view class="title ellipsis">
+          {{item.Name}}
+        </view>
+        <view class="buy-info">
+          <view class="num">{{item.EmailTimeID}}</view>
+        </view>
+        <view class="price">$ {{item.Price}}</view>
+      </navigator>
+      <view class="buy-info">
+        <view class="num">数量{{item.Quantity}}件 {{item.StyleNumber}}</view>
+        <view class="num">{{item.UPC}}</view>                                                               
+        <view class="num">{{item.buyer}}</view>
+        <navigator
+          url="/pages/order/index?id={{item._id}}&color={{item.Color}}&emailtimeid={{item.EmailTimeID}}&emailtitle={{item.EmailTitle}}&name={{item.Name}}&originalprice={{item.OriginalPrice}}&price={{item.Price}}&quantity={{item.Quantity}}&stylenumber={{item.StyleNumber}}&tax={{item.Tax}}&upc={{item.UPC}}&sellprice={{item.sellprice}}&buyer={{item.buyer}}&tracknumber={{item.tracknumber}}">
+          <image class="car" mode="aspectFill" src="/images/nav/order-on.png"></image>
+        </navigator>
+      </view>
 
-<view class="categoryContainer">
-	<view class="menu">
-		<view id="{{item.id}}" class="classtype" bindtap="searchTab" wx:for="{{classType}}" wx:key="index">
-			<text>{{item.name}}</text>
-		</view>
-	</view>
-	<view class="fakemenu"></view>
-	<view class="list">
-		<view class="productList" wx:for="{{productList==''?productAll:productList}}" wx:key="index">
-			<image src="{{item.src}}"></image>
-			<view class="info">
-				<text>{{item.name}}</text>
-				<text>{{item.price}}</text>
-			</view>
-		</view>
-	</view>
-
-</view>
-<view class="bottombuttons">
-	<van-button class="bottombutton1" type="default" bindtap="addcategory">
-		+加分类
-		<text></text>
-	</van-button>
-	<button class="bottombutton2" type="primary" size="mini" bindtap="additem">
-		+加库存
-		<text></text>
-	</button>
+    </view>
+  </view>
+</block>
+<view wx:if="{{listType == 2 }}" class="list2-box">
+  <view class="list2" wx:for="{{goods}}" wx:key="id">
+    <navigator
+      url="/pages/goods-details/index?id={{item._id}}&color={{item.Color}}&emailtimeid={{item.EmailTimeID}}&emailtitle={{item.EmailTitle}}&name={{item.Name}}&originalprice={{item.OriginalPrice}}&price={{item.Price}}&quantity={{item.Quantity}}&stylenumber={{item.StyleNumber}}&tax={{item.Tax}}&upc={{item.UPC}}&sellprice={{item.sellprice}}&buyer={{item.buyer}}&tracknumber={{item.tracknumber}}">
+      <!-- <image class="img" mode="aspectFill" src="{{item.pic}}"></image> -->
+      <view class="goods-info">
+        <view class="title">
+          {{item.Name}}
+        </view>
+      </view>
+    </navigator>
+    <view class="goods-info">
+      <!-- <view class="title">
+        <navigator url="/pages/goods-details/index?id={{item._id}}">{{item.Name}}</navigator>
+      </view> -->
+      <!-- <view class="price">$ {{item.Price}}</view> -->
+      <view>
+          <input class="weui_input" bindchange="bindaftertaxpriceChange" data-index="{{item._id}}" name="name" type="text" placeholder="{{item.description}}" />
+      </view>
+      <view class="buy-info">
+        <view class="num">{{item.StyleNumber}}</view>
+        <van-stepper value="{{item.Quantity}}"data-index="{{item._id}}"min="0"bind:change="onChange"/>
+        <!-- <vant-stepper value="{{item.Quantity}}" bind:plus="storesJia" bind:minus="storesJian" /> -->
+        <!-- <view class="num">数量{{item.Quantity}}件 {{item.StyleNumber}}</view> -->
+        <!-- <view class="num">{{item.numberOrders}}人已购{{item.numberSells}}件</view> -->
+        <!-- <image class="car" src="/images/icon/car.svg" data-id="{{item._id}}" bindtap="addShopCar"></image> -->
+      </view>
+    </view>
+  </view>
 </view>

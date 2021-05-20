@@ -9,7 +9,7 @@ exports.main = async (event, context) => {
   const { addr } = event
   const openid = cloud.getWXContext().OPENID
   let mails = await db.collection('user').doc(openid).get().then(res => {
-    return res.data.mails
+    return res.data.mails[res.data.active_email_index]
   })
   if (addr) {
     mails = mails.filter(v => v.addr !== addr)
